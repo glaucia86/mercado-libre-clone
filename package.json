@@ -1,0 +1,34 @@
+{
+  "name": "mercado-libre-clone",
+  "version": "1.0.0",
+  "private": true,
+  "title": "Mercado Libre Clone",
+  "description": "An application replicating Mercado Libre Page. But using the best practices and programming concepts",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "test": "npm run test --workspaces",
+    "test:coverage": "npm run test:coverage --workspaces",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glaucia86/mercado-libre-clone.git"
+  },
+  "keywords": [],
+  "author": "Glaucia Lemos <GitHub: glaucia86>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/glaucia86/mercado-libre-clone/issues"
+  },
+  "homepage": "https://github.com/glaucia86/mercado-libre-clone#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "typescript": "^5.8.3"
+  }
+}
