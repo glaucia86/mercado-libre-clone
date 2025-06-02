@@ -323,7 +323,7 @@ export class Seller {
   /**
    * Determines if seller has free shipping capability
    */
-  public hasFreeShipping(): boolean {
+  public get hasFreeShipping(): boolean {
     return this.shippingPolicy.hasFreeShipping;
   }
 
