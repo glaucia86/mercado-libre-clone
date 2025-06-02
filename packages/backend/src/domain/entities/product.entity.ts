@@ -5,12 +5,11 @@
  * Implements the Aggregate pattern from DDD to ensure consistency boundaries.
  * 
  * @architectural_pattern Aggregate Root, Value Object composition
- * @business_rules Price validation, availabillity constraints, rating calculations
+ * @business_rules Price validation, availability constraints, rating calculations
  */
 
-
-import type { Seller } from './seller.entity';
-import type { PaymentMethod } from './payment-method.entity';
+import type { Seller } from './seller.entity'
+import type { PaymentMethod } from './payment-method.entity'
 
 export interface ProductImage {
   readonly id: string
@@ -99,21 +98,21 @@ export class Product {
    * @returns Validated Product instance
    * @throws ProductValidationError if business rules are violated
    */
-  public static create(productData:{
+  public static create(productData: {
     id: string
     title: string
     description: string
     shortDescription: string
     price: number
     currency: string
-    images: readonly ProductImage[]
+    images: ProductImage[]
     category: string
     subcategory: string
     condition: ProductCondition
     seller: Seller
-    paymentMethods: readonly PaymentMethod[]
+    paymentMethods: PaymentMethod[]
     rating: ProductRating
-    specifications: readonly ProductSpecification[]
+    specifications: ProductSpecification[]
     stock: ProductStock
     dimensions: ProductDimensions
     tags: string[]
@@ -154,67 +153,66 @@ export class Product {
    * @throws ProductValidationError for any rule violation
    */
   private validateBusinessRules(): void {
-    this.validatePrice();
-    this.validateImages();
-    this.validateRating();
-    this.validateStock();
-    this.validateDiscount();
+    this.validatePrice()
+    this.validateImages()
+    this.validateRating()
+    this.validateStock()
+    this.validateDiscount()
   }
 
   private validatePrice(): void {
     if (this.price <= 0) {
-      throw new Error('Price must be greater than zero');
+      throw new Error('Product price must be greater than zero')
     }
-
+    
     if (!this.currency || this.currency.length !== 3) {
-      throw new Error('Currency must be a valid 3-letter ISO code');
+      throw new Error('Currency must be a valid 3-character ISO code')
     }
   }
 
   private validateImages(): void {
     if (this.images.length === 0) {
-      throw new Error('Product must have at least one image');
+      throw new Error('Product must have at least one image')
     }
 
-    const primaryImages = this.images.filter(img => img.isPrimary);
-
+    const primaryImages = this.images.filter(img => img.isPrimary)
     if (primaryImages.length !== 1) {
-      throw new Error('Product must have exactly one primary image');
+      throw new Error('Product must have exactly one primary image')
     }
   }
 
   private validateRating(): void {
     if (this.rating.average < 0 || this.rating.average > 5) {
-      throw new Error('Average rating must be between 0 and 5');
+      throw new Error('Rating average must be between 0 and 5')
     }
 
-    if (this.rating.count < 0){
-      throw new Error('Rating count cannot be negative');
+    if (this.rating.count < 0) {
+      throw new Error('Rating count cannot be negative')
     }
   }
 
   private validateStock(): void {
     if (this.stock.available < 0 || this.stock.reserved < 0) {
-      throw new Error('Stock quantities cannot be negative');
+      throw new Error('Stock quantities cannot be negative')
     }
 
     if (this.stock.threshold < 0) {
-      throw new Error('Stock threshold cannot be negative');
+      throw new Error('Stock threshold cannot be negative')
     }
   }
 
   private validateDiscount(): void {
     if (this.discount) {
       if (this.discount.percentage < 0 || this.discount.percentage > 100) {
-        throw new Error('Discount percentage must be between 0 and 100');
+        throw new Error('Discount percentage must be between 0 and 100')
       }
 
       if (this.discount.amount < 0) {
-        throw new Error('Discount amount cannot be negative');
+        throw new Error('Discount amount cannot be negative')
       }
 
       if (this.discount.validUntil && this.discount.validUntil < new Date()) {
-        throw new Error('Discount cannot be valid in the past');
+        throw new Error('Discount validity period has expired')
       }
     }
   }
@@ -231,16 +229,16 @@ export class Product {
    */
   public getFinalPrice(): number {
     if (!this.discount || !this.isDiscountValid()) {
-      return this.price;
+      return this.price
     }
 
     const discountAmount = this.discount.percentage > 0 
       ? this.price * (this.discount.percentage / 100)
-      : this.discount.amount;
+      : this.discount.amount
 
-    return Math.max(this.price - discountAmount);
+    return Math.max(0, this.price - discountAmount)
   }
-  
+
   /**
    * Determines product availability based on business rules
    * 
@@ -250,43 +248,41 @@ export class Product {
   public isAvailable(): boolean {
     return this.isActive && 
            this.stock.available > 0 && 
-           this.stock.available > this.stock.threshold;
+           this.stock.available > this.stock.threshold
   }
 
   /**
    * Validates if current discount is active and applicable
    */
   private isDiscountValid(): boolean {
-    if (!this.discount) {
-      return false;
-    }
-    return !this.discount.validUntil || this.discount.validUntil > new Date();
+    if (!this.discount) return false
+    
+    return !this.discount.validUntil || this.discount.validUntil > new Date()
   }
 
   /**
    * Retrieves primary product image for display purposes
    */
   public getPrimaryImage(): ProductImage {
-    const primaryImage = this.images.find(img => img.isPrimary);
+    const primaryImage = this.images.find(img => img.isPrimary)
     if (!primaryImage) {
-      throw new Error('Product must have a primary image');
+      throw new Error('Product must have a primary image')
     }
-
-    return primaryImage;
+    return primaryImage
   }
 
   /**
    * Calculates savings amount when discount is applied
    */
   public getSavingsAmount(): number {
-    return this.price - this.getFinalPrice();
+    return this.price - this.getFinalPrice()
   }
 
   /**
    * Determines if product qualifies for free shipping based on seller policies
    */
   public hasEligibleFreeShipping(): boolean {
-    return this.seller.hasFreeShipping && this.getFinalPrice() >= this.seller.freeShippingMinimum;
+    return this.seller.hasFreeShipping && this.getFinalPrice() >= this.seller.freeShippingMinimum
   }
 
   /**
@@ -296,16 +292,16 @@ export class Product {
     const formatter = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: this.currency,
-      minimumFractionDigits: 2,
-    });
-
-    return formatter.format(this.getFinalPrice());
+      minimumFractionDigits: 2
+    })
+    
+    return formatter.format(this.getFinalPrice())
   }
 
   /**
    * Retrieves product images sorted by display order
    */
   public getOrderedImages(): readonly ProductImage[] {
-    return [...this.images].sort((a, b) => a.order - b.order);
+    return [...this.images].sort((a, b) => a.order - b.order)
   }
 }
