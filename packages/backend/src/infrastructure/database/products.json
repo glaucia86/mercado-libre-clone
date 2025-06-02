@@ -1,0 +1,1260 @@
+{
+  "products": [
+    {
+      "id": "ML-001-SMARTPHONE-GALAXY",
+      "title": "Samsung Galaxy S24 Ultra 256GB 5G Violeta Titânio",
+      "description": "O Samsung Galaxy S24 Ultra redefine a excelência em smartphones premium. Com processador Snapdragon 8 Gen 3 otimizado para Galaxy, oferece performance incomparável para multitarefas, gaming e produtividade. A câmera de 200MP com zoom óptico de 5x e Space Zoom de até 100x captura detalhes extraordinários. A tela Dynamic AMOLED 2X de 6.8\" com taxa de atualização adaptável de 120Hz proporciona experiência visual imersiva. S Pen integrada para máxima produtividade. Resistência IP68 e Gorilla Glass Armor para durabilidade excepcional.",
+      "shortDescription": "Smartphone Samsung Galaxy S24 Ultra 256GB com câmera 200MP, S Pen e 5G",
+      "price": 6999.99,
+      "currency": "BRL",
+      "images": [
+        {
+          "id": "img-galaxy-primary",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_706152-MLA74088396736_012024-F.webp",
+          "altText": "Samsung Galaxy S24 Ultra Violeta Titânio - Vista Principal",
+          "isPrimary": true,
+          "order": 1
+        },
+        {
+          "id": "img-galaxy-back",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_906402-MLA78898729191_092024-F.webp",
+          "altText": "Samsung Galaxy S24 Ultra - Vista Traseira",
+          "isPrimary": false,
+          "order": 2
+        },
+        {
+          "id": "img-galaxy-camera",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_906402-MLA78898729191_092024-F.webp",
+          "altText": "Samsung Galaxy S24 Ultra - Detalhe do Sistema de Câmeras",
+          "isPrimary": false,
+          "order": 3
+        },
+        {
+          "id": "img-galaxy-spen",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_906402-MLA78898729191_092024-F.webp",
+          "altText": "Samsung Galaxy S24 Ultra - S Pen em Uso",
+          "isPrimary": false,
+          "order": 4
+        }
+      ],
+      "category": "Celulares e Telefones",
+      "subcategory": "Smartphones",
+      "condition": {
+        "type": "new",
+        "description": "Produto novo, lacrado, com garantia oficial Samsung de 12 meses"
+      },
+      "seller": {
+        "id": "SELLER-TECH-PREMIUM",
+        "username": "techpremium_oficial",
+        "displayName": "Tech Premium Oficial",
+        "email": "vendas@techpremium.com.br",
+        "profileImage": "https://avatar.iran.liara.run/public/32",
+        "address": {
+          "street": "Avenida Paulista",
+          "number": "1578",
+          "complement": "Conjunto 401",
+          "neighborhood": "Bela Vista",
+          "city": "São Paulo",
+          "state": "SP",
+          "zipCode": "01310-200",
+          "country": "Brasil"
+        },
+        "rating": {
+          "average": 4.9,
+          "count": 15847,
+          "positivePercentage": 98.7,
+          "neutralPercentage": 1.1,
+          "negativePercentage": 0.2,
+          "last12Months": 4.95
+        },
+        "metrics": {
+          "totalSales": 89562,
+          "totalProducts": 2847,
+          "averageResponseTime": 0.5,
+          "onTimeDeliveryRate": 98.9,
+          "customerSatisfactionRate": 97.8,
+          "disputeResolutionRate": 99.1
+        },
+        "shippingPolicy": {
+          "hasFreeShipping": true,
+          "freeShippingMinimum": 299.99,
+          "averageProcessingTime": 1,
+          "shippingMethods": ["Correios PAC", "Correios SEDEX", "Mercado Envios Flex", "Entrega Expressa"],
+          "domesticShipping": true,
+          "internationalShipping": false
+        },
+        "certifications": [
+          {
+            "type": "mercado_lider",
+            "issuedAt": "2023-01-15T00:00:00.000Z",
+            "validUntil": "2025-01-15T00:00:00.000Z",
+            "description": "MercadoLíder com mais de 5 anos de excelência em vendas"
+          },
+          {
+            "type": "premium",
+            "issuedAt": "2022-03-10T00:00:00.000Z",
+            "description": "Vendedor Premium com atendimento diferenciado"
+          }
+        ],
+        "businessInfo": {
+          "companyName": "Tech Premium Comércio de Eletrônicos LTDA",
+          "taxId": "12.345.678/0001-90",
+          "businessType": "small_business",
+          "establishedYear": 2018,
+          "employees": 45
+        },
+        "joinedAt": "2018-06-15T10:30:00.000Z",
+        "lastActiveAt": "2025-05-31T08:15:00.000Z",
+        "isActive": true,
+        "isVerified": true,
+        "description": "Especialista em tecnologia premium com mais de 5 anos no MercadoLibre. Produtos originais, garantia estendida disponível e suporte técnico especializado."
+      },
+      "paymentMethods": [
+        {
+          "id": "PM-CREDIT-VISA",
+          "type": "credit_card",
+          "provider": "mercado_pago",
+          "name": "visa",
+          "displayName": "Visa",
+          "description": "Cartão de crédito Visa com parcelamento em até 12x",
+          "logoUrl": "https://logos.mercadopago.com/visa.png",
+          "currency": "BRL",
+          "isActive": true,
+          "isInstallmentEnabled": true,
+          "maxInstallments": 12,
+          "fees": {
+            "processingFee": 2.39,
+            "platformFee": 1.61,
+            "acquirerFee": 1.2,
+            "totalFeePercentage": 5.2,
+            "fixedFee": 0.39
+          },
+          "limits": {
+            "minimumAmount": 5.0,
+            "maximumAmount": 50000.0,
+            "dailyLimit": 10000.0,
+            "monthlyLimit": 50000.0
+          },
+          "security": {
+            "requires3DSecure": true,
+            "fraudDetection": true,
+            "tokenization": true,
+            "encryptionStandard": "AES-256",
+            "complianceLevel": "PCI_DSS_LEVEL_1"
+          },
+          "processingTime": {
+            "authorizationTime": 3,
+            "settlementTime": 14,
+            "refundTime": 7,
+            "chargebackWindow": 120
+          },
+          "supportedCountries": ["BR"],
+          "acceptedCards": ["visa", "visa_electron"],
+          "metadata": {
+            "issuerBanks": ["banco_do_brasil", "itau", "bradesco", "santander"],
+            "acceptsDebit": false
+          }
+        },
+        {
+          "id": "PM-PIX-INSTANT",
+          "type": "pix",
+          "provider": "mercado_pago",
+          "name": "pix",
+          "displayName": "PIX",
+          "description": "Pagamento instantâneo PIX - Aprovação imediata",
+          "logoUrl": "https://logos.mercadopago.com/pix.png",
+          "currency": "BRL",
+          "isActive": true,
+          "isInstallmentEnabled": false,
+          "maxInstallments": 1,
+          "fees": {
+            "processingFee": 0.99,
+            "platformFee": 0.5,
+            "acquirerFee": 0,
+            "totalFeePercentage": 1.49,
+            "fixedFee": 0
+          },
+          "limits": {
+            "minimumAmount": 1.0,
+            "maximumAmount": 50000.0,
+            "dailyLimit": 20000.0,
+            "monthlyLimit": 50000.0
+          },
+          "security": {
+            "requires3DSecure": false,
+            "fraudDetection": true,
+            "tokenization": true,
+            "encryptionStandard": "AES-256",
+            "complianceLevel": "PCI_DSS_LEVEL_1"
+          },
+          "processingTime": {
+            "authorizationTime": 1,
+            "settlementTime": 0,
+            "refundTime": 1,
+            "chargebackWindow": 90
+          },
+          "supportedCountries": ["BR"],
+          "acceptedCards": [],
+          "metadata": {
+            "qrCodeExpiry": 300,
+            "instantConfirmation": true
+          }
+        }
+      ],
+      "rating": {
+        "average": 4.8,
+        "count": 2847,
+        "distribution": {
+          "5": 2278,
+          "4": 398,
+          "3": 114,
+          "2": 34,
+          "1": 23
+        }
+      },
+      "specifications": [
+        {
+          "name": "Marca",
+          "value": "Samsung",
+          "category": "General"
+        },
+        {
+          "name": "Modelo",
+          "value": "Galaxy S24 Ultra",
+          "category": "General"
+        },
+        {
+          "name": "Tela",
+          "value": "6.8\" Dynamic AMOLED 2X, 120Hz adaptável",
+          "category": "Display"
+        },
+        {
+          "name": "Processador",
+          "value": "Snapdragon 8 Gen 3 for Galaxy",
+          "category": "Performance"
+        },
+        {
+          "name": "Memória RAM",
+          "value": "12GB LPDDR5X",
+          "category": "Performance"
+        },
+        {
+          "name": "Armazenamento",
+          "value": "256GB UFS 4.0",
+          "category": "Storage"
+        },
+        {
+          "name": "Câmera Principal",
+          "value": "200MP + 50MP + 12MP + 10MP",
+          "category": "Camera"
+        },
+        {
+          "name": "Bateria",
+          "value": "5000 mAh com carregamento rápido 45W",
+          "category": "Battery"
+        },
+        {
+          "name": "Sistema Operacional",
+          "value": "Android 14 com One UI 6.1",
+          "category": "Software"
+        },
+        {
+          "name": "Conectividade",
+          "value": "5G, Wi-Fi 7, Bluetooth 5.3",
+          "category": "Connectivity"
+        },
+        {
+          "name": "Resistência",
+          "value": "IP68 + Gorilla Glass Armor",
+          "category": "Durability"
+        },
+        {
+          "name": "S Pen",
+          "value": "Incluída com latência ultra-baixa",
+          "category": "Accessories"
+        }
+      ],
+      "stock": {
+        "available": 47,
+        "reserved": 3,
+        "threshold": 5
+      },
+      "dimensions": {
+        "weight": 232,
+        "height": 16.27,
+        "width": 7.91,
+        "depth": 0.86,
+        "unit": "cm"
+      },
+      "tags": ["smartphone", "samsung", "galaxy", "5g", "camera", "premium", "s-pen", "android"],
+      "createdAt": "2024-02-15T10:00:00.000Z",
+      "updatedAt": "2025-05-30T14:30:00.000Z",
+      "isActive": true,
+      "discount": {
+        "percentage": 8.5,
+        "amount": 594.99,
+        "validUntil": "2025-06-15T23:59:59.000Z",
+        "condition": "Oferta especial de lançamento - desconto limitado"
+      }
+    },
+    {
+      "id": "ML-002-LAPTOP-MACBOOK",
+      "title": "Apple MacBook Air M2 13\" 8GB 256GB SSD Space Gray",
+      "description": "O MacBook Air com chip M2 oferece performance excepcional em design ultrafino. Com CPU de 8 núcleos e GPU de até 10 núcleos, proporciona velocidade impressionante para tarefas criativas e produtivas. A tela Liquid Retina de 13.6\" com True Tone oferece cores vibrantes e precisas. Bateria de até 18 horas para uso intenso. Sistema de áudio espacial com graves mais profundos. Câmera FaceTime HD 1080p para videochamadas nítidas. Conectividade com 2 portas Thunderbolt e suporte para monitor externo 6K. MacOS Sonoma com recursos avançados de produtividade e privacidade.",
+      "shortDescription": "MacBook Air M2 13\" com 8GB RAM, 256GB SSD e chip M2 da Apple",
+      "price": 12999.90,
+      "currency": "BRL",
+      "images": [
+        {
+          "id": "img-macbook-primary",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_637313-MLA51356401031_082022-F.webp",
+          "altText": "MacBook Air M2 Space Gray - Vista Principal Aberto",
+          "isPrimary": true,
+          "order": 1
+        },
+        {
+          "id": "img-macbook-closed",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_637313-MLA51356401031_082022-F.webp",
+          "altText": "MacBook Air M2 - Vista Fechado",
+          "isPrimary": false,
+          "order": 2
+        },
+        {
+          "id": "img-macbook-ports",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_637313-MLA51356401031_082022-F.webp",
+          "altText": "MacBook Air M2 - Detalhe das Portas Thunderbolt",
+          "isPrimary": false,
+          "order": 3
+        },
+        {
+          "id": "img-macbook-keyboard",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_637313-MLA51356401031_082022-F.webp",
+          "altText": "MacBook Air M2 - Teclado Magic Keyboard",
+          "isPrimary": false,
+          "order": 4
+        }
+      ],
+      "category": "Informática",
+      "subcategory": "Notebooks",
+      "condition": {
+        "type": "new",
+        "description": "Produto novo, lacrado, com garantia oficial Apple de 12 meses"
+      },
+      "seller": {
+        "id": "SELLER-APPLE-STORE",
+        "username": "applestore_brasil",
+        "displayName": "Apple Store Oficial Brasil",
+        "email": "vendas@apple.com.br",
+        "profileImage": "https://avatar.iran.liara.run/public/100",
+        "address": {
+          "street": "Rua Oscar Freire",
+          "number": "888",
+          "complement": "Loja 1",
+          "neighborhood": "Jardins",
+          "city": "São Paulo",
+          "state": "SP",
+          "zipCode": "01426-001",
+          "country": "Brasil"
+        },
+        "rating": {
+          "average": 4.95,
+          "count": 45672,
+          "positivePercentage": 99.2,
+          "neutralPercentage": 0.6,
+          "negativePercentage": 0.2,
+          "last12Months": 4.97
+        },
+        "metrics": {
+          "totalSales": 156789,
+          "totalProducts": 487,
+          "averageResponseTime": 0.3,
+          "onTimeDeliveryRate": 99.5,
+          "customerSatisfactionRate": 98.9,
+          "disputeResolutionRate": 99.8
+        },
+        "shippingPolicy": {
+          "hasFreeShipping": true,
+          "freeShippingMinimum": 99.99,
+          "averageProcessingTime": 1,
+          "shippingMethods": ["Apple Express", "Mercado Envios Full", "Retirada na Loja"],
+          "domesticShipping": true,
+          "internationalShipping": false
+        },
+        "certifications": [
+          {
+            "type": "mercado_lider",
+            "issuedAt": "2020-01-01T00:00:00.000Z",
+            "description": "MercadoLíder Platinum com excelência comprovada"
+          },
+          {
+            "type": "verified",
+            "issuedAt": "2019-08-15T00:00:00.000Z",
+            "description": "Loja oficial Apple verificada"
+          }
+        ],
+        "businessInfo": {
+          "companyName": "Apple Computer Brasil Ltda",
+          "taxId": "00.623.904/0003-35",
+          "businessType": "corporation",
+          "establishedYear": 1999,
+          "employees": 2500
+        },
+        "joinedAt": "2019-08-15T00:00:00.000Z",
+        "lastActiveAt": "2025-05-31T09:00:00.000Z",
+        "isActive": true,
+        "isVerified": true,
+        "description": "Loja oficial Apple no Brasil. Produtos originais com garantia internacional, suporte técnico especializado e programa de troca."
+      },
+      "paymentMethods": [
+        {
+          "id": "PM-CREDIT-MASTERCARD",
+          "type": "credit_card",
+          "provider": "mercado_pago",
+          "name": "mastercard",
+          "displayName": "Mastercard",
+          "description": "Cartão de crédito Mastercard em até 18x sem juros",
+          "logoUrl": "https://logos.mercadopago.com/mastercard.png",
+          "currency": "BRL",
+          "isActive": true,
+          "isInstallmentEnabled": true,
+          "maxInstallments": 18,
+          "fees": {
+            "processingFee": 2.19,
+            "platformFee": 1.81,
+            "acquirerFee": 1.1,
+            "totalFeePercentage": 5.1,
+            "fixedFee": 0.49
+          },
+          "limits": {
+            "minimumAmount": 5.0,
+            "maximumAmount": 100000.0,
+            "dailyLimit": 25000.0,
+            "monthlyLimit": 100000.0
+          },
+          "security": {
+            "requires3DSecure": true,
+            "fraudDetection": true,
+            "tokenization": true,
+            "encryptionStandard": "AES-256",
+            "complianceLevel": "PCI_DSS_LEVEL_1"
+          },
+          "processingTime": {
+            "authorizationTime": 2,
+            "settlementTime": 14,
+            "refundTime": 5,
+            "chargebackWindow": 120
+          },
+          "supportedCountries": ["BR"],
+          "acceptedCards": ["mastercard", "maestro"],
+          "metadata": {
+            "issuerBanks": ["nubank", "inter", "c6", "original"],
+            "acceptsDebit": true
+          }
+        }
+      ],
+      "rating": {
+        "average": 4.9,
+        "count": 8945,
+        "distribution": {
+          "5": 7893,
+          "4": 789,
+          "3": 178,
+          "2": 56,
+          "1": 29
+        }
+      },
+      "specifications": [
+        {
+          "name": "Marca",
+          "value": "Apple",
+          "category": "General"
+        },
+        {
+          "name": "Modelo",
+          "value": "MacBook Air M2",
+          "category": "General"
+        },
+        {
+          "name": "Processador",
+          "value": "Apple M2 (CPU 8-core, GPU 10-core)",
+          "category": "Performance"
+        },
+        {
+          "name": "Memória",
+          "value": "8GB RAM unificada",
+          "category": "Performance"
+        },
+        {
+          "name": "Armazenamento",
+          "value": "256GB SSD",
+          "category": "Storage"
+        },
+        {
+          "name": "Tela",
+          "value": "13.6\" Liquid Retina (2560x1664)",
+          "category": "Display"
+        },
+        {
+          "name": "Gráficos",
+          "value": "GPU Apple M2 de 10 núcleos",
+          "category": "Graphics"
+        },
+        {
+          "name": "Bateria",
+          "value": "Até 18 horas de reprodução de vídeo",
+          "category": "Battery"
+        },
+        {
+          "name": "Sistema",
+          "value": "macOS Sonoma",
+          "category": "Software"
+        },
+        {
+          "name": "Conectividade",
+          "value": "2x Thunderbolt 3, Wi-Fi 6, Bluetooth 5.0",
+          "category": "Connectivity"
+        },
+        {
+          "name": "Câmera",
+          "value": "FaceTime HD 1080p",
+          "category": "Camera"
+        },
+        {
+          "name": "Áudio",
+          "value": "Sistema de 4 alto-falantes com áudio espacial",
+          "category": "Audio"
+        }
+      ],
+      "stock": {
+        "available": 23,
+        "reserved": 7,
+        "threshold": 3
+      },
+      "dimensions": {
+        "weight": 1240,
+        "height": 30.41,
+        "width": 21.5,
+        "depth": 1.13,
+        "unit": "cm"
+      },
+      "tags": ["macbook", "apple", "m2", "notebook", "laptop", "premium", "macos", "retina"],
+      "createdAt": "2024-03-20T08:30:00.000Z",
+      "updatedAt": "2025-05-29T16:45:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": "ML-003-CONSOLE-PS5",
+      "title": "PlayStation 5 Digital Edition 825GB SSD + Controle DualSense",
+      "description": "Experimente os jogos PS5 com carregamento ultrarrápido graças ao SSD customizado de alta velocidade. Sinta feedback tátil via controle DualSense, mergulhe em jogos com áudio 3D e desfrute de uma nova geração de jogos PlayStation incríveis. O PS5 Digital Edition é uma versão 100% digital que oferece a mesma experiência de jogo sem unidade de disco. Backwards compatibility com milhares de jogos PS4. Suporte para jogos em 4K até 120fps. Ray tracing em tempo real para gráficos cinematográficos. Tempest 3D AudioTech para som envolvente.",
+      "shortDescription": "PlayStation 5 Digital Edition com SSD 825GB e controle DualSense",
+      "price": 3899.99,
+      "currency": "BRL",
+      "images": [
+        {
+          "id": "img-ps5-primary",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_797125-MLA82522963662_032025-F.webp",
+          "altText": "PlayStation 5 Digital Edition - Console e Controle",
+          "isPrimary": true,
+          "order": 1
+        },
+        {
+          "id": "img-ps5-side",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_797125-MLA82522963662_032025-F.webp",
+          "altText": "PlayStation 5 Digital - Vista Lateral",
+          "isPrimary": false,
+          "order": 2
+        },
+        {
+          "id": "img-ps5-controller",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_797125-MLA82522963662_032025-F.webp",
+          "altText": "Controle DualSense - Detalhe",
+          "isPrimary": false,
+          "order": 3
+        },
+        {
+          "id": "img-ps5-ports",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_797125-MLA82522963662_032025-F.webp",
+          "altText": "PlayStation 5 - Conectividade e Portas",
+          "isPrimary": false,
+          "order": 4
+        }
+      ],
+      "category": "Games",
+      "subcategory": "Consoles",
+      "condition": {
+        "type": "new",
+        "description": "Console novo lacrado com garantia Sony de 12 meses"
+      },
+      "seller": {
+        "id": "SELLER-GAMESTORE",
+        "username": "gamestore_premium",
+        "displayName": "GameStore Premium",
+        "email": "contato@gamestore.com.br",
+        "profileImage": "https://avatar.iran.liara.run/public/17",
+        "address": {
+          "street": "Rua dos Gamers",
+          "number": "456",
+          "complement": "Loja A",
+          "neighborhood": "Vila Olímpia",
+          "city": "São Paulo",
+          "state": "SP",
+          "zipCode": "04547-001",
+          "country": "Brasil"
+        },
+        "rating": {
+          "average": 4.7,
+          "count": 12456,
+          "positivePercentage": 96.8,
+          "neutralPercentage": 2.4,
+          "negativePercentage": 0.8,
+          "last12Months": 4.75
+        },
+        "metrics": {
+          "totalSales": 67834,
+          "totalProducts": 3456,
+          "averageResponseTime": 1.2,
+          "onTimeDeliveryRate": 95.6,
+          "customerSatisfactionRate": 94.2,
+          "disputeResolutionRate": 97.8
+        },
+        "shippingPolicy": {
+          "hasFreeShipping": true,
+          "freeShippingMinimum": 199.99,
+          "averageProcessingTime": 2,
+          "shippingMethods": ["Correios SEDEX", "Mercado Envios", "Entrega Local"],
+          "domesticShipping": true,
+          "internationalShipping": false
+        },
+        "certifications": [
+          {
+            "type": "premium",
+            "issuedAt": "2023-05-10T00:00:00.000Z",
+            "validUntil": "2025-05-10T00:00:00.000Z",
+            "description": "Vendedor Premium especializado em games"
+          }
+        ],
+        "businessInfo": {
+          "companyName": "GameStore Comércio de Games Ltda",
+          "taxId": "98.765.432/0001-10",
+          "businessType": "small_business",
+          "establishedYear": 2020,
+          "employees": 15
+        },
+        "joinedAt": "2020-07-20T12:00:00.000Z",
+        "lastActiveAt": "2025-05-31T07:30:00.000Z",
+        "isActive": true,
+        "isVerified": true,
+        "description": "Especialista em consoles e games com mais de 4 anos de experiência. Produtos originais e atendimento gamer."
+      },
+      "paymentMethods": [
+        {
+          "id": "PM-BOLETO-BANCARIO",
+          "type": "boleto",
+          "provider": "mercado_pago",
+          "name": "boleto",
+          "displayName": "Boleto Bancário",
+          "description": "Boleto bancário com 5% de desconto à vista",
+          "logoUrl": "https://logos.mercadopago.com/boleto.png",
+          "currency": "BRL",
+          "isActive": true,
+          "isInstallmentEnabled": false,
+          "maxInstallments": 1,
+          "fees": {
+            "processingFee": 1.99,
+            "platformFee": 1.5,
+            "acquirerFee": 0,
+            "totalFeePercentage": 3.49,
+            "fixedFee": 2.5
+          },
+          "limits": {
+            "minimumAmount": 10.0,
+            "maximumAmount": 5000.0,
+            "dailyLimit": 5000.0,
+            "monthlyLimit": 15000.0
+          },
+          "security": {
+            "requires3DSecure": false,
+            "fraudDetection": true,
+            "tokenization": false,
+            "encryptionStandard": "TLS-1.3",
+            "complianceLevel": "PCI_DSS_LEVEL_2"
+          },
+          "processingTime": {
+            "authorizationTime": 10,
+            "settlementTime": 3,
+            "refundTime": 7,
+            "chargebackWindow": 180
+          },
+          "supportedCountries": ["BR"],
+          "acceptedCards": [],
+          "metadata": {
+            "expirationDays": 3,
+            "discountPercentage": 5
+          }
+        }
+      ],
+      "rating": {
+        "average": 4.8,
+        "count": 5632,
+        "distribution": {
+          "5": 4506,
+          "4": 789,
+          "3": 225,
+          "2": 78,
+          "1": 34
+        }
+      },
+      "specifications": [
+        {
+          "name": "Marca",
+          "value": "Sony",
+          "category": "General"
+        },
+        {
+          "name": "Modelo",
+          "value": "PlayStation 5 Digital Edition",
+          "category": "General"
+        },
+        {
+          "name": "Processador",
+          "value": "AMD Zen 2 8-core @ 3.5GHz",
+          "category": "Performance"
+        },
+        {
+          "name": "GPU",
+          "value": "AMD RDNA 2 @ 2.23GHz (10.3 TFLOPs)",
+          "category": "Graphics"
+        },
+        {
+          "name": "Memória",
+          "value": "16GB GDDR6",
+          "category": "Performance"
+        },
+        {
+          "name": "Armazenamento",
+          "value": "825GB SSD NVMe",
+          "category": "Storage"
+        },
+        {
+          "name": "Resolução",
+          "value": "4K até 120fps, 8K",
+          "category": "Display"
+        },
+        {
+          "name": "Ray Tracing",
+          "value": "Hardware acelerado",
+          "category": "Graphics"
+        },
+        {
+          "name": "Áudio",
+          "value": "Tempest 3D AudioTech",
+          "category": "Audio"
+        },
+        {
+          "name": "Conectividade",
+          "value": "Wi-Fi 6, Bluetooth 5.1, Ethernet",
+          "category": "Connectivity"
+        },
+        {
+          "name": "Portas",
+          "value": "USB-A x2, USB-C x1, HDMI 2.1",
+          "category": "Connectivity"
+        },
+        {
+          "name": "Compatibilidade",
+          "value": "Jogos PS5 e PS4 (milhares de títulos)",
+          "category": "Software"
+        }
+      ],
+      "stock": {
+        "available": 8,
+        "reserved": 12,
+        "threshold": 2
+      },
+      "dimensions": {
+        "weight": 3900,
+        "height": 39.0,
+        "width": 26.0,
+        "depth": 10.4,
+        "unit": "cm"
+      },
+      "tags": ["playstation", "ps5", "console", "gaming", "4k", "sony", "dualsense", "digital"],
+      "createdAt": "2024-01-10T15:20:00.000Z",
+      "updatedAt": "2025-05-28T11:15:00.000Z",
+      "isActive": true,
+      "discount": {
+        "percentage": 12.0,
+        "amount": 467.99,
+        "validUntil": "2025-06-10T23:59:59.000Z",
+        "condition": "Oferta especial - estoque limitado"
+      }
+    },
+    {
+      "id": "ML-004-HEADPHONE-SONY",
+      "title": "Fone de Ouvido Sony WH-1000XM5 Bluetooth com Cancelamento de Ruído",
+      "description": "O Sony WH-1000XM5 oferece a mais avançada tecnologia de cancelamento de ruído da indústria. Com processador V1 dedicado e 8 microfones para captura precisa de ruído ambiente, proporciona silêncio total para uma experiência auditiva imersiva. Driver de 30mm desenvolvido especialmente garante qualidade sonora excepcional com graves profundos e agudos cristalinos. Bateria de até 30 horas com cancelamento ativo, carregamento rápido de 3 minutos para 3 horas de uso. Design ergonômico ultraconfortável para uso prolongado. Conectividade multiponto para alternar facilmente entre dispositivos.",
+      "shortDescription": "Fone Bluetooth Sony WH-1000XM5 com cancelamento de ruído e 30h de bateria",
+      "price": 1899.99,
+      "currency": "BRL",
+      "images": [
+        {
+          "id": "img-sony-headphone-primary",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_773829-MLA74287271021_012024-F.webp",
+          "altText": "Sony WH-1000XM5 - Vista Principal",
+          "isPrimary": true,
+          "order": 1
+        },
+        {
+          "id": "img-sony-headphone-folded",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_773829-MLA74287271021_012024-F.webp",
+          "altText": "Sony WH-1000XM5 - Dobrado para Transporte",
+          "isPrimary": false,
+          "order": 2
+        },
+        {
+          "id": "img-sony-headphone-controls",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_773829-MLA74287271021_012024-F.webp",
+          "altText": "Sony WH-1000XM5 - Controles Touch",
+          "isPrimary": false,
+          "order": 3
+        }
+      ],
+      "category": "Eletrônicos",
+      "subcategory": "Fones de Ouvido",
+      "condition": {
+        "type": "new",
+        "description": "Produto novo, lacrado, com garantia oficial Sony de 12 meses"
+      },
+      "seller": {
+        "id": "SELLER-AUDIO-TECH",
+        "username": "audiotech_oficial",
+        "displayName": "AudioTech Oficial",
+        "email": "vendas@audiotech.com.br",
+        "profileImage": "https://avatar.iran.liara.run/public/39",
+        "address": {
+          "street": "Rua da Consolação",
+          "number": "3412",
+          "complement": "Sala 502",
+          "neighborhood": "Consolação",
+          "city": "São Paulo",
+          "state": "SP",
+          "zipCode": "01416-001",
+          "country": "Brasil"
+        },
+        "rating": {
+          "average": 4.8,
+          "count": 8934,
+          "positivePercentage": 97.3,
+          "neutralPercentage": 2.1,
+          "negativePercentage": 0.6,
+          "last12Months": 4.85
+        },
+        "metrics": {
+          "totalSales": 45621,
+          "totalProducts": 1567,
+          "averageResponseTime": 0.8,
+          "onTimeDeliveryRate": 96.7,
+          "customerSatisfactionRate": 95.8,
+          "disputeResolutionRate": 98.2
+        },
+        "shippingPolicy": {
+          "hasFreeShipping": true,
+          "freeShippingMinimum": 199.99,
+          "averageProcessingTime": 1,
+          "shippingMethods": ["Correios PAC", "Correios SEDEX", "Mercado Envios"],
+          "domesticShipping": true,
+          "internationalShipping": false
+        },
+        "certifications": [
+          {
+            "type": "verified",
+            "issuedAt": "2021-08-20T00:00:00.000Z",
+            "description": "Vendedor verificado com histórico de excelência"
+          }
+        ],
+        "businessInfo": {
+          "companyName": "AudioTech Comércio de Eletrônicos LTDA",
+          "taxId": "45.678.901/0001-23",
+          "businessType": "small_business",
+          "establishedYear": 2019,
+          "employees": 25
+        },
+        "joinedAt": "2019-11-12T14:20:00.000Z",
+        "lastActiveAt": "2025-05-31T10:45:00.000Z",
+        "isActive": true,
+        "isVerified": true,
+        "description": "Especialista em áudio premium e eletrônicos de alta qualidade. Suporte técnico especializado e garantia estendida."
+      },
+      "paymentMethods": [
+        {
+          "id": "PM-CREDIT-ELO",
+          "type": "credit_card",
+          "provider": "mercado_pago",
+          "name": "elo",
+          "displayName": "Elo",
+          "description": "Cartão de crédito Elo em até 10x sem juros",
+          "logoUrl": "https://logos.mercadopago.com/elo.png",
+          "currency": "BRL",
+          "isActive": true,
+          "isInstallmentEnabled": true,
+          "maxInstallments": 10,
+          "fees": {
+            "processingFee": 2.29,
+            "platformFee": 1.71,
+            "acquirerFee": 1.0,
+            "totalFeePercentage": 5.0,
+            "fixedFee": 0.29
+          },
+          "limits": {
+            "minimumAmount": 5.0,
+            "maximumAmount": 30000.0,
+            "dailyLimit": 5000.0,
+            "monthlyLimit": 30000.0
+          },
+          "security": {
+            "requires3DSecure": true,
+            "fraudDetection": true,
+            "tokenization": true,
+            "encryptionStandard": "AES-256",
+            "complianceLevel": "PCI_DSS_LEVEL_1"
+          },
+          "processingTime": {
+            "authorizationTime": 4,
+            "settlementTime": 14,
+            "refundTime": 6,
+            "chargebackWindow": 120
+          },
+          "supportedCountries": ["BR"],
+          "acceptedCards": ["elo"],
+          "metadata": {
+            "issuerBanks": ["banco_do_brasil", "caixa"],
+            "acceptsDebit": false
+          }
+        }
+      ],
+      "rating": {
+        "average": 4.7,
+        "count": 1456,
+        "distribution": {
+          "5": 1089,
+          "4": 291,
+          "3": 58,
+          "2": 12,
+          "1": 6
+        }
+      },
+      "specifications": [
+        {
+          "name": "Marca",
+          "value": "Sony",
+          "category": "General"
+        },
+        {
+          "name": "Modelo",
+          "value": "WH-1000XM5",
+          "category": "General"
+        },
+        {
+          "name": "Tipo",
+          "value": "Over-Ear com Cancelamento de Ruído",
+          "category": "Design"
+        },
+        {
+          "name": "Conectividade",
+          "value": "Bluetooth 5.2, NFC, USB-C",
+          "category": "Connectivity"
+        },
+        {
+          "name": "Driver",
+          "value": "30mm dinâmico",
+          "category": "Audio"
+        },
+        {
+          "name": "Resposta de Frequência",
+          "value": "4Hz - 40kHz",
+          "category": "Audio"
+        },
+        {
+          "name": "Bateria",
+          "value": "30h com ANC, 40h sem ANC",
+          "category": "Battery"
+        },
+        {
+          "name": "Carregamento",
+          "value": "Rápido: 3min = 3h de uso",
+          "category": "Battery"
+        },
+        {
+          "name": "Microfones",
+          "value": "8 microfones para ANC + chamadas",
+          "category": "Audio"
+        },
+        {
+          "name": "Peso",
+          "value": "250g",
+          "category": "Design"
+        }
+      ],
+      "stock": {
+        "available": 67,
+        "reserved": 5,
+        "threshold": 10
+      },
+      "dimensions": {
+        "weight": 250,
+        "height": 26.0,
+        "width": 19.0,
+        "depth": 8.0,
+        "unit": "cm"
+      },
+      "tags": ["sony", "headphone", "bluetooth", "cancelamento-ruido", "premium", "wireless"],
+      "createdAt": "2024-04-10T09:15:00.000Z",
+      "updatedAt": "2025-05-30T12:20:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": "ML-005-TABLET-IPAD",
+      "title": "Apple iPad 10ª Geração 64GB Wi-Fi Tela 10.9\" - Azul",
+      "description": "O iPad de 10ª geração apresenta um design completamente renovado com tela Liquid Retina de 10.9 polegadas com True Tone. Powered pelo chip A14 Bionic para performance excepcional em apps, jogos e multitarefas. Suporte completo para Apple Pencil (1ª geração) e Magic Keyboard Folio para máxima produtividade. Câmera frontal de 12MP ultrawide com Center Stage para videochamadas mais naturais. Câmera traseira de 12MP para fotos e vídeos impressionantes. Touch ID integrado no botão superior para segurança conveniente. iPadOS 16 com recursos avançados de produtividade.",
+      "shortDescription": "iPad 10ª Geração 64GB Wi-Fi com tela 10.9\" e chip A14 Bionic",
+      "price": 3199.99,
+      "currency": "BRL",
+      "images": [
+        {
+          "id": "img-ipad-primary",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_764857-MLA52988770506_122022-F.webp",
+          "altText": "iPad 10ª Geração Azul - Vista Principal",
+          "isPrimary": true,
+          "order": 1
+        },
+        {
+          "id": "img-ipad-side",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_764857-MLA52988770506_122022-F.webp",
+          "altText": "iPad 10ª Geração - Vista Lateral",
+          "isPrimary": false,
+          "order": 2
+        },
+        {
+          "id": "img-ipad-accessories",
+          "url": "https://http2.mlstatic.com/D_NQ_NP_2X_764857-MLA52988770506_122022-F.webp",
+          "altText": "iPad 10ª Geração - Compatibilidade com Acessórios",
+          "isPrimary": false,
+          "order": 3
+        }
+      ],
+      "category": "Informática",
+      "subcategory": "Tablets",
+      "condition": {
+        "type": "new",
+        "description": "Produto novo, lacrado, com garantia oficial Apple de 12 meses"
+      },
+      "seller": {
+        "id": "SELLER-APPLE-STORE",
+        "username": "applestore_brasil",
+        "displayName": "Apple Store Oficial Brasil",
+        "email": "vendas@apple.com.br",
+        "profileImage": "https://avatar.iran.liara.run/public/62",
+        "address": {
+          "street": "Rua Oscar Freire",
+          "number": "888",
+          "complement": "Loja 1",
+          "neighborhood": "Jardins",
+          "city": "São Paulo",
+          "state": "SP",
+          "zipCode": "01426-001",
+          "country": "Brasil"
+        },
+        "rating": {
+          "average": 4.95,
+          "count": 45672,
+          "positivePercentage": 99.2,
+          "neutralPercentage": 0.6,
+          "negativePercentage": 0.2,
+          "last12Months": 4.97
+        },
+        "metrics": {
+          "totalSales": 156789,
+          "totalProducts": 487,
+          "averageResponseTime": 0.3,
+          "onTimeDeliveryRate": 99.5,
+          "customerSatisfactionRate": 98.9,
+          "disputeResolutionRate": 99.8
+        },
+        "shippingPolicy": {
+          "hasFreeShipping": true,
+          "freeShippingMinimum": 99.99,
+          "averageProcessingTime": 1,
+          "shippingMethods": ["Apple Express", "Mercado Envios Full", "Retirada na Loja"],
+          "domesticShipping": true,
+          "internationalShipping": false
+        },
+        "certifications": [
+          {
+            "type": "mercado_lider",
+            "issuedAt": "2020-01-01T00:00:00.000Z",
+            "description": "MercadoLíder Platinum com excelência comprovada"
+          },
+          {
+            "type": "verified",
+            "issuedAt": "2019-08-15T00:00:00.000Z",
+            "description": "Loja oficial Apple verificada"
+          }
+        ],
+        "businessInfo": {
+          "companyName": "Apple Computer Brasil Ltda",
+          "taxId": "00.623.904/0003-35",
+          "businessType": "corporation",
+          "establishedYear": 1999,
+          "employees": 2500
+        },
+        "joinedAt": "2019-08-15T00:00:00.000Z",
+        "lastActiveAt": "2025-05-31T09:00:00.000Z",
+        "isActive": true,
+        "isVerified": true,
+        "description": "Loja oficial Apple no Brasil. Produtos originais com garantia internacional, suporte técnico especializado e programa de troca."
+      },
+      "paymentMethods": [
+        {
+          "id": "PM-CREDIT-MASTERCARD",
+          "type": "credit_card",
+          "provider": "mercado_pago",
+          "name": "mastercard",
+          "displayName": "Mastercard",
+          "description": "Cartão de crédito Mastercard em até 18x sem juros",
+          "logoUrl": "https://logos.mercadopago.com/mastercard.png",
+          "currency": "BRL",
+          "isActive": true,
+          "isInstallmentEnabled": true,
+          "maxInstallments": 18,
+          "fees": {
+            "processingFee": 2.19,
+            "platformFee": 1.81,
+            "acquirerFee": 1.1,
+            "totalFeePercentage": 5.1,
+            "fixedFee": 0.49
+          },
+          "limits": {
+            "minimumAmount": 5.0,
+            "maximumAmount": 100000.0,
+            "dailyLimit": 25000.0,
+            "monthlyLimit": 100000.0
+          },
+          "security": {
+            "requires3DSecure": true,
+            "fraudDetection": true,
+            "tokenization": true,
+            "encryptionStandard": "AES-256",
+            "complianceLevel": "PCI_DSS_LEVEL_1"
+          },
+          "processingTime": {
+            "authorizationTime": 2,
+            "settlementTime": 14,
+            "refundTime": 5,
+            "chargebackWindow": 120
+          },
+          "supportedCountries": ["BR"],
+          "acceptedCards": ["mastercard", "maestro"],
+          "metadata": {
+            "issuerBanks": ["nubank", "inter", "c6", "original"],
+            "acceptsDebit": true
+          }
+        }
+      ],
+      "rating": {
+        "average": 4.6,
+        "count": 2341,
+        "distribution": {
+          "5": 1638,
+          "4": 469,
+          "3": 164,
+          "2": 47,
+          "1": 23
+        }
+      },
+      "specifications": [
+        {
+          "name": "Marca",
+          "value": "Apple",
+          "category": "General"
+        },
+        {
+          "name": "Modelo",
+          "value": "iPad 10ª Geração",
+          "category": "General"
+        },
+        {
+          "name": "Tela",
+          "value": "10.9\" Liquid Retina (2360x1640)",
+          "category": "Display"
+        },
+        {
+          "name": "Processador",
+          "value": "Apple A14 Bionic",
+          "category": "Performance"
+        },
+        {
+          "name": "Armazenamento",
+          "value": "64GB",
+          "category": "Storage"
+        },
+        {
+          "name": "Conectividade",
+          "value": "Wi-Fi 6, Bluetooth 5.2",
+          "category": "Connectivity"
+        },
+        {
+          "name": "Câmera Traseira",
+          "value": "12MP com Smart HDR 3",
+          "category": "Camera"
+        },
+        {
+          "name": "Câmera Frontal",
+          "value": "12MP Ultra Wide com Center Stage",
+          "category": "Camera"
+        },
+        {
+          "name": "Bateria",
+          "value": "Até 10 horas de navegação",
+          "category": "Battery"
+        },
+        {
+          "name": "Sistema",
+          "value": "iPadOS 16",
+          "category": "Software"
+        },
+        {
+          "name": "Acessórios",
+          "value": "Compatível com Apple Pencil (1ª geração)",
+          "category": "Accessories"
+        },
+        {
+          "name": "Segurança",
+          "value": "Touch ID no botão superior",
+          "category": "Security"
+        }
+      ],
+      "stock": {
+        "available": 34,
+        "reserved": 8,
+        "threshold": 5
+      },
+      "dimensions": {
+        "weight": 477,
+        "height": 24.76,
+        "width": 17.85,
+        "depth": 0.7,
+        "unit": "cm"
+      },
+      "tags": ["ipad", "apple", "tablet", "a14", "liquid-retina", "pencil", "ipados"],
+      "createdAt": "2024-05-05T11:30:00.000Z",
+      "updatedAt": "2025-05-30T15:45:00.000Z",
+      "isActive": true,
+      "discount": {
+        "percentage": 5.0,
+        "amount": 159.99,
+        "validUntil": "2025-06-30T23:59:59.000Z",
+        "condition": "Desconto especial para estudantes e educadores"
+      }
+    }
+  ]
+}
