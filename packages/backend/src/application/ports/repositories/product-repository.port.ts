@@ -10,7 +10,7 @@
  * @persistence_agnostic JSON, Database, Cache, or any storage mechanism
  */
 
-import { Product } from "@/domain/entities/product.entity";
+import { Product } from "../../../domain/entities/product.entity";
 
 /**
  * Query specification for product filtering and pagination
