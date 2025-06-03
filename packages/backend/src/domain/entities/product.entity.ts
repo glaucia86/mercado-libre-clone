@@ -118,8 +118,8 @@ export class Product {
     tags: string[]
     createdAt: Date
     updatedAt: Date
-    isActive?: boolean
-    discount?: ProductDiscount
+    isActive?: boolean | undefined
+    discount?: ProductDiscount | undefined
   }): Product {
     return new Product(
       productData.id,
