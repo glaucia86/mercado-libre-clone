@@ -320,43 +320,40 @@ export class JsonProductRepository implements IProductRepository {
   }
 
   /**
-   * Converts raw seller data to Seller entity
-   */
-  /**
- * Converts raw seller data to Seller entity
- */
-private parseRawSeller(rawSeller: RawSeller): Seller {
-  return Seller.create({
-    id: rawSeller.id,
-    username: rawSeller.username,
-    displayName: rawSeller.displayName,
-    email: rawSeller.email,
-    profileImage: rawSeller.profileImage,
-    address: rawSeller.address,
-    rating: {
-      average: rawSeller.rating.average,
-      count: rawSeller.rating.count,
-      positivePercentage: rawSeller.rating.positivePercentage,
-      neutralPercentage: rawSeller.rating.neutralPercentage,
-      negativePercentage: rawSeller.rating.negativePercentage,
-      lastTwelveMonths: rawSeller.rating.last12Months
-    },
-    metrics: rawSeller.metrics,
-    shippingPolicy: rawSeller.shippingPolicy,
-    certifications: rawSeller.certifications.map(cert => ({
-      type: cert.type,
-      issuedAt: new Date(cert.issuedAt),
-      validUntil: cert.validUntil ? new Date(cert.validUntil) : new Date('9999-12-31'),
-      description: cert.description
-    })),
-    businessInfo: rawSeller.businessInfo,
-    joinedAt: new Date(rawSeller.joinedAt),
-    lastActiveAt: new Date(rawSeller.lastActiveAt),
-    isActive: rawSeller.isActive,
-    isVerified: rawSeller.isVerified,
-    description: rawSeller.description
-  })
-}
+  * Converts raw seller data to Seller entity
+  */
+  private parseRawSeller(rawSeller: RawSeller): Seller {
+    return Seller.create({
+      id: rawSeller.id,
+      username: rawSeller.username,
+      displayName: rawSeller.displayName,
+      email: rawSeller.email,
+      ...(rawSeller.profileImage && { profileImage: rawSeller.profileImage }),
+      address: rawSeller.address,
+      rating: {
+        average: rawSeller.rating.average,
+        count: rawSeller.rating.count,
+        positivePercentage: rawSeller.rating.positivePercentage,
+        neutralPercentage: rawSeller.rating.neutralPercentage,
+        negativePercentage: rawSeller.rating.negativePercentage,
+        lastTwelveMonths: rawSeller.rating.last12Months
+      },
+      metrics: rawSeller.metrics,
+      shippingPolicy: rawSeller.shippingPolicy,
+      certifications: rawSeller.certifications.map(cert => ({
+        type: cert.type,
+        issuedAt: new Date(cert.issuedAt),
+        validUntil: cert.validUntil ? new Date(cert.validUntil) : new Date('9999-12-31'),
+        description: cert.description
+      })),
+      businessInfo: rawSeller.businessInfo,
+      joinedAt: new Date(rawSeller.joinedAt),
+      lastActiveAt: new Date(rawSeller.lastActiveAt),
+      isActive: rawSeller.isActive,
+      isVerified: rawSeller.isVerified,
+      ...(rawSeller.description && { description: rawSeller.description })
+    })
+  }
 
   /**
    * Converts raw payment method data to PaymentMethod entity
