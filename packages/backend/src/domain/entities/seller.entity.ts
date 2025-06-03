@@ -50,7 +50,7 @@ export interface ShippingPolicy {
 export interface SellerCertification {
   readonly type: 'verified' | 'premium' | 'top_seller' | 'mercado_lider'
   readonly issuedAt: Date
-  readonly validUntil?: Date
+  readonly validUntil?: Date | undefined
   readonly description: string
 }
 
