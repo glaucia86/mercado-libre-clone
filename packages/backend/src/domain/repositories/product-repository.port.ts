@@ -12,8 +12,6 @@
 
 import { Product } from "../entities/product.entity";
 
-
-
 /**
  * Query specification for product filtering and pagination
  * 
@@ -23,25 +21,25 @@ import { Product } from "../entities/product.entity";
 
 export interface ProductQuerySpecification {
   readonly filters?: {
-    readonly category?: string;
-    readonly subcategory?: string;
-    readonly sellerId?: string;
-    readonly minPrice?: number;
-    readonly maxPrice?: number;
-    readonly condition?: string;
-    readonly isActive?: boolean;
-    readonly hasDiscount?: boolean;
-    readonly inStock?: boolean;
-    readonly tags?: readonly string[];
-  }
+  readonly category?: string;
+  readonly subcategory?: string;
+  readonly sellerId?: string;
+  readonly minPrice?: number;
+  readonly maxPrice?: number;
+  readonly condition?: string;
+  readonly isActive?: boolean;
+  readonly hasDiscount?: boolean;
+  readonly inStock?: boolean;
+  readonly tags?: readonly string[];
+} | undefined
   readonly sorting?: {
-    readonly field: 'price' | 'rating' | 'createdAt' | 'title' | 'popularity';
-    readonly direction: 'asc' | 'desc';
-  }
+  readonly field: 'price' | 'rating' | 'createdAt' | 'title' | 'popularity';
+  readonly direction: 'asc' | 'desc';
+} | undefined
   readonly pagination?: {
-    readonly offset: number;
-    readonly limit: number;
-  }
+  readonly offset: number;
+  readonly limit: number;
+} | undefined
 }
 
 /**
