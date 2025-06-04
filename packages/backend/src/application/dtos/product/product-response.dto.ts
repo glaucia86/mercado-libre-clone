@@ -54,7 +54,7 @@ export interface ProductDiscountDto {
   readonly percentage: number;
   readonly amount: number;
   readonly savingsAmount: number;
-  readonly validUntil?: number;
+  readonly validUntil?: string;
   readonly condition?: string;
   readonly isValid: boolean;
 }

@@ -9,8 +9,7 @@
  * @business_rules Product visibility, pricing calculations, availability checks
  */
 
-
-import { IProductRepository } from '@/domain/repositories/product-repository.port'
+import type { IProductRepository } from '../../../domain/repositories/product-repository.port';
 import type { Product } from '../../../domain/entities/product.entity'
 import { 
   GetProductDetailsQuery, 
@@ -212,16 +211,17 @@ export class GetProductDetailsUseCase {
    * Transforms pricing information
    */
   private transformPrice(product: Product): ProductPriceDto {
-    const discount = product.discount ? this.transformDiscount(product) : undefined
-
-    return {
+    const basePrice = {
       originalPrice: product.price,
       finalPrice: product.getFinalPrice(),
       currency: product.currency,
       formattedPrice: product.getFormattedPrice(),
-      discount,
       hasFreeShipping: product.hasEligibleFreeShipping()
     }
+
+    return product.discount 
+      ? { ...basePrice, discount: this.transformDiscount(product) }
+      : basePrice
   }
 
   /**
@@ -236,8 +236,8 @@ export class GetProductDetailsUseCase {
       percentage: product.discount.percentage,
       amount: product.discount.amount,
       savingsAmount: product.getSavingsAmount(),
-      validUntil: product.discount.validUntil?.toISOString(),
-      condition: product.discount.condition,
+      ...(product.discount.validUntil && { validUntil: product.discount.validUntil.toISOString() }),
+      ...(product.discount.condition && { condition: product.discount.condition }),
       isValid: product.getSavingsAmount() > 0
     }
   }
@@ -252,7 +252,7 @@ export class GetProductDetailsUseCase {
       id: seller.id,
       username: seller.username,
       displayName: seller.displayName,
-      profileImage: seller.profileImage,
+      profileImage: seller.profileImage || '',
       location: seller.getLocationDisplay(),
       rating: {
         average: seller.rating.average,
@@ -315,7 +315,7 @@ export class GetProductDetailsUseCase {
 
       return {
         ...baseDto,
-        installmentOptions
+        ...(installmentOptions.length > 0 && { installmentOptions })
       }
     })
   }
