@@ -11,7 +11,7 @@
  * @dependencies Express application factory, environment configuration, process management
  */
 
-import { startApplication, type ApplicationConfig } from './presentation/app'
+import { startApplication, type ApplicationConfig, type LogLevel } from './presentation/app'
 
 /**
  * Environment configuration interface for type-safe configuration resolution
@@ -41,7 +41,7 @@ interface EnvironmentConfiguration {
   readonly monitoring: {
     readonly enableHealthChecks: boolean
     readonly enablePerformanceMetrics: boolean
-    readonly logLevel: 'error' | 'warn' | 'info' | 'debug'
+    readonly logLevel: LogLevel
   }
 }
 
@@ -81,7 +81,7 @@ function resolveEnvironmentConfiguration(): EnvironmentConfiguration {
     monitoring: {
       enableHealthChecks: process.env.ENABLE_HEALTH_CHECKS !== 'false',
       enablePerformanceMetrics: process.env.ENABLE_PERFORMANCE_METRICS !== 'false',
-      logLevel: (process.env.LOG_LEVEL || (nodeEnv === 'development' ? 'debug' : 'info')) as 'error' | 'warn' | 'info' | 'debug'
+      logLevel: (process.env.LOG_LEVEL || (nodeEnv === 'development' ? 'debug' : 'info')) as LogLevel
     }
   }
 }

@@ -31,9 +31,9 @@ import { JsonProductRepository } from '../infrastructure/repositories/json-produ
 import { productRoutes } from './routes/product.routes'
 import { healthRoutes } from './routes/health.routes'
 import { errorHandlerMiddleware } from './middlewares/error-handler.middleware'
-import { validationMiddleware } from './middlewares/validation.middleware' //./middlewares/validation.middleware
+import { validationMiddleware } from './middlewares/validation.middleware' 
 import { corsMiddleware } from './middlewares/cors.middleware'
-import { loggingMiddleware } from './middlewares/logging.middleware'
+import { loggingMiddleware, type LogLevel } from './middlewares/logging.middleware'
 import { rateLimitMiddleware } from './middlewares/rate-limit.middleware'
 
 /**
@@ -58,7 +58,7 @@ export interface ApplicationConfig {
   readonly enableRateLimit: boolean
   readonly rateLimitMax: number
   readonly rateLimitWindowMs: number
-  readonly logLevel: 'error' | 'warn' | 'info' | 'debug'
+  readonly logLevel: LogLevel
 }
 
 /**
@@ -74,7 +74,7 @@ const defaultConfig: ApplicationConfig = {
   enableRateLimit: process.env.ENABLE_RATE_LIMIT !== 'false',
   rateLimitMax: parseInt(process.env.RATE_LIMIT_MAX ?? '100', 10),
   rateLimitWindowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS ?? '900000', 10), // 15 minutes
-  logLevel: (process.env.LOG_LEVEL as ApplicationConfig['logLevel']) ?? 'info'
+  logLevel: (process.env.LOG_LEVEL as LogLevel) ?? 'info'
 }
 
 /**
@@ -324,10 +324,7 @@ export class ExpressApplicationFactory {
     }))
     
     // Logging middleware
-    app.use(loggingMiddleware(config.logLevel))
-    
-    // Request validation middleware (applied per route)
-    app.use(validationMiddleware())
+    app.use(loggingMiddleware({ level: config.logLevel }))
   }
   
   /**
@@ -482,3 +479,5 @@ export async function startApplication(
       process.on('SIGINT', () => shutdown('SIGINT'))
     })
   }
+
+export { LogLevel }
