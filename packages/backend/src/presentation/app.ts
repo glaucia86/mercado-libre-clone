@@ -31,7 +31,7 @@ import { JsonProductRepository } from '../infrastructure/repositories/json-produ
 import { productRoutes } from './routes/product.routes'
 import { healthRoutes } from './routes/health.routes'
 import { errorHandlerMiddleware } from './middlewares/error-handler.middleware'
-import { validationMiddleware } from './middlewares/validation.middleware'
+import { validationMiddleware } from './middlewares/validation.middleware' //./middlewares/validation.middleware
 import { corsMiddleware } from './middlewares/cors.middleware'
 import { loggingMiddleware } from './middlewares/logging.middleware'
 import { rateLimitMiddleware } from './middlewares/rate-limit.middleware'
