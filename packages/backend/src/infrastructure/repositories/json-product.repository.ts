@@ -19,7 +19,7 @@ import {
   RepositoryResult,
   RepositoryError,
   RepositoryErrorCode
-} from '../../domain/repositories/product-repository.port';
+} from '../../application/ports/repositories/product-repository.port';
 import { Product } from '../../domain/entities/product.entity';
 import { Seller } from '../../domain/entities/seller.entity'; 
 import { PaymentMethod } from '../../domain/entities/payment-method.entity';
