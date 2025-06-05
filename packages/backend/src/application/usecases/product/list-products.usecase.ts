@@ -1,16 +1,17 @@
 /**
- * List Products Use Case - Enterprise-Grade Query Processing Architecture
+ * List Products Use Case - Advanced Query Processing Architecture
  * 
- * Implements comprehensive product listing with advanced filtering, sorting,
- * faceting, and aggregation capabilities. Orchestrates complex business logic
- * while maintaining clear separation of concerns and optimal performance.
+ * Implements sophisticated product enumeration with comprehensive filtering,
+ * sorting, pagination, and business intelligence capabilities. Provides
+ * enterprise-grade query processing with performance optimization and
+ * detailed metadata aggregation for enhanced user experience.
  * 
- * @architectural_pattern Use Case Pattern, Query Object, Specification Pattern
+ * @architectural_pattern CQRS Query Operation, Specification Pattern
  * @layer Application - Business Logic Orchestration
- * @responsibility Product enumeration, filtering, aggregation, and transformation
+ * @dependencies Domain entities, Repository abstractions, Advanced DTOs
  */
 
-import type { IProductRepository } from '../../../application/ports/repositories/product-repository.port'
+import type { IProductRepository } from '../../ports/repositories/product-repository.port'
 import type { Product } from '../../../domain/entities/product.entity'
 import {
   ListProductsQuery,
@@ -19,15 +20,15 @@ import {
   UseCaseErrorCode
 } from '../../dtos/product/product-query.dto'
 import type { ProductSummaryDto } from '../../dtos/product/product-response.dto'
-import { 
-  AdvancedPaginationMetadata, 
-  EnhancedProductListResponseDto, 
-  ProductFacet, 
-  SearchMetadata 
-} from '../../../application/dtos/product/product-list.dto'
+import {
+  AdvancedPaginationMetadata,
+  EnhancedProductListResponseDto,
+  ProductFacet,
+  SearchMetadata
+} from '../../dtos/product/product-list.dto'
 
 /**
- * Performance monitoring and caching infrastructure
+ * Performance metrics tracking for query optimization
  */
 interface QueryPerformanceMetrics {
   readonly startTime: number
@@ -39,7 +40,7 @@ interface QueryPerformanceMetrics {
 }
 
 /**
- * Internal aggregation state for efficient computation
+ * Aggregation state for business intelligence calculations
  */
 interface AggregationState {
   readonly categoryDistribution: Map<string, number>
@@ -50,35 +51,21 @@ interface AggregationState {
 }
 
 /**
- * ListProductsUseCase - Advanced Product Enumeration with Business Intelligence
- * 
- * Provides comprehensive product listing capabilities with sophisticated filtering,
- * multi-dimensional sorting, faceted search, and real-time aggregations for
- * enhanced user experience and business analytics.
+ * List products use case implementation with advanced querying capabilities
  */
 export class ListProductsUseCase {
-  private readonly performanceThresholds = {
-    queryWarningMs: 500,
-    queryErrorMs: 2000,
-    maxResultsPerPage: 100,
-    defaultPageSize: 20
-  } as const
-
   constructor(
     private readonly productRepository: IProductRepository
   ) {}
 
   /**
-   * Executes comprehensive product listing with advanced filtering and aggregation
-   * 
-   * @param query - Complex query specification with filters, sorting, and metadata options
-   * @returns Structured response with products, pagination, facets, and business intelligence
+   * Executes product enumeration with comprehensive filtering and business intelligence
    */
   async execute(query: ListProductsQuery): Promise<UseCaseResult<EnhancedProductListResponseDto>> {
-    const startTime = performance.now()
+    const performanceStartTime = performance.now()
     
     try {
-      // Phase 1: Input Validation & Sanitization
+      // Input validation and sanitization
       const validationResult = this.validateAndSanitizeInput(query)
       if (!validationResult.success) {
         return validationResult
@@ -86,55 +73,51 @@ export class ListProductsUseCase {
 
       const sanitizedQuery = validationResult.data
 
-      // Phase 2: Repository Query Execution with Performance Monitoring
-      const repositoryStartTime = performance.now()
-      const repositoryResult = await this.productRepository.findMany({
+      // Repository query execution with specification transformation
+      const repositorySpec = {
         filters: this.transformToRepositoryFilters(sanitizedQuery.filters),
         sorting: this.transformToRepositorySorting(sanitizedQuery.sorting),
         pagination: this.transformToRepositoryPagination(sanitizedQuery.pagination)
-      })
-
-      if (!repositoryResult.success) {
-        return this.handleRepositoryError(repositoryResult.error)
       }
 
-      const repositoryLatency = performance.now() - repositoryStartTime
+      const repositoryStartTime = performance.now()
+      const repositoryResult = await this.productRepository.findMany(repositorySpec)
+      const repositoryEndTime = performance.now()
 
-      // Phase 3: Business Logic Application & Data Transformation
+      if (!repositoryResult.success) {
+        return this.handleRepositoryError(repositoryResult)
+      }
+
+      // Transform to enhanced response with business intelligence
       const transformationStartTime = performance.now()
-      const response = await this.transformToEnhancedResponse(
+      const enhancedResponse = await this.transformToEnhancedResponse(
         repositoryResult.data,
         sanitizedQuery,
         {
-          startTime,
-          repositoryLatency,
+          startTime: performanceStartTime,
+          repositoryLatency: repositoryEndTime - repositoryStartTime,
           transformationLatency: 0,
           totalLatency: 0,
           itemsProcessed: repositoryResult.data.items.length
         }
       )
-      
-      const transformationLatency = performance.now() - transformationStartTime
-      const totalLatency = performance.now() - startTime
+      const transformationEndTime = performance.now()
 
-      // Phase 4: Performance Monitoring & Alerting
-      this.monitorPerformance({
-        startTime,
-        repositoryLatency,
-        transformationLatency,
-        totalLatency,
+      // Performance metrics calculation
+      const metrics: QueryPerformanceMetrics = {
+        startTime: performanceStartTime,
+        repositoryLatency: repositoryEndTime - repositoryStartTime,
+        transformationLatency: transformationEndTime - transformationStartTime,
+        totalLatency: transformationEndTime - performanceStartTime,
         itemsProcessed: repositoryResult.data.items.length
-      })
+      }
+
+      // Performance monitoring and alerting
+      this.monitorPerformance(metrics)
 
       return {
         success: true,
-        data: {
-          ...response,
-          metadata: {
-            ...response.metadata,
-            executionTime: totalLatency
-          }
-        }
+        data: enhancedResponse
       }
 
     } catch (error) {
@@ -143,71 +126,76 @@ export class ListProductsUseCase {
   }
 
   /**
-   * Validates and sanitizes input query with comprehensive business rule checking
+   * Validates and sanitizes input with comprehensive business rule enforcement
    */
   private validateAndSanitizeInput(
     query: ListProductsQuery
   ): UseCaseResult<Required<ListProductsQuery>> {
-    // Pagination validation with business constraints
-    const pagination = {
-      page: Math.max(1, query.pagination?.page ?? 1),
-      limit: Math.min(
-        Math.max(1, query.pagination?.limit ?? this.performanceThresholds.defaultPageSize),
-        this.performanceThresholds.maxResultsPerPage
-      ),
-      offset: 0
+    // Provide defaults for missing optional fields
+    const sanitizedQuery: Required<ListProductsQuery> = {
+      filters: query.filters || {},
+      sorting: query.sorting || { field: 'createdAt', direction: 'desc' },
+      pagination: query.pagination || { offset: 0, limit: 20 },
+      includeFacets: query.includeFacets ?? true,
+      includeMetadata: query.includeMetadata ?? true
     }
-    pagination.offset = (pagination.page - 1) * pagination.limit
 
-    // Price range validation and normalization
-    const filters = query.filters ? { ...query.filters } : {}
-    if (filters.minPrice !== undefined && filters.maxPrice !== undefined) {
-      if (filters.minPrice > filters.maxPrice) {
-        return {
-          success: false,
-          error: new UseCaseError(
-            'Invalid price range: minimum price cannot exceed maximum price',
-            UseCaseErrorCode.INVALID_INPUT,
-            { minPrice: filters.minPrice, maxPrice: filters.maxPrice }
-          )
-        }
+    // Pagination validation
+    if (sanitizedQuery.pagination.limit < 1 || sanitizedQuery.pagination.limit > 100) {
+      return {
+        success: false,
+        error: new UseCaseError(
+          'Invalid pagination limit. Must be between 1 and 100',
+          UseCaseErrorCode.INVALID_INPUT,
+          { field: 'pagination.limit', value: sanitizedQuery.pagination.limit }
+        )
       }
     }
 
-    // Rating validation
-    if (filters.rating?.min !== undefined) {
-      if (filters.rating.min < 0 || filters.rating.min > 5) {
-        return {
-          success: false,
-          error: new UseCaseError(
-            'Invalid rating range: rating must be between 0 and 5',
-            UseCaseErrorCode.INVALID_INPUT,
-            { rating: filters.rating }
-          )
-        }
+    if (sanitizedQuery.pagination.offset < 0) {
+      return {
+        success: false,
+        error: new UseCaseError(
+          'Invalid pagination offset. Must be greater than or equal to 0',
+          UseCaseErrorCode.INVALID_INPUT,
+          { field: 'pagination.offset', value: sanitizedQuery.pagination.offset }
+        )
       }
     }
 
-    // Sorting validation and defaulting
-    const sorting = query.sorting ?? {
-      field: 'relevance',
-      direction: 'desc'
-    }
-
-    return {
-      success: true,
-      data: {
-        filters,
-        sorting,
-        pagination,
-        includeFacets: query.includeFacets ?? false,
-        includeMetadata: query.includeMetadata ?? true
+    // Price range validation
+    if (sanitizedQuery.filters.minPrice !== undefined && sanitizedQuery.filters.minPrice < 0) {
+      return {
+        success: false,
+        error: new UseCaseError(
+          'Minimum price must be greater than or equal to 0',
+          UseCaseErrorCode.INVALID_INPUT,
+          { field: 'filters.minPrice', value: sanitizedQuery.filters.minPrice }
+        )
       }
     }
+
+    if (sanitizedQuery.filters.maxPrice !== undefined && 
+        sanitizedQuery.filters.minPrice !== undefined &&
+        sanitizedQuery.filters.maxPrice < sanitizedQuery.filters.minPrice) {
+      return {
+        success: false,
+        error: new UseCaseError(
+          'Maximum price must be greater than minimum price',
+          UseCaseErrorCode.INVALID_INPUT,
+          { 
+            minPrice: sanitizedQuery.filters.minPrice,
+            maxPrice: sanitizedQuery.filters.maxPrice
+          }
+        )
+      }
+    }
+
+    return { success: true, data: sanitizedQuery }
   }
 
   /**
-   * Transforms application-layer filters to repository-layer specification
+   * Transforms application filters to repository specification
    */
   private transformToRepositoryFilters(filters?: ListProductsQuery['filters']) {
     if (!filters) return undefined
@@ -221,34 +209,30 @@ export class ListProductsUseCase {
     if (filters.maxPrice !== undefined) result.maxPrice = filters.maxPrice
     if (filters.condition !== undefined) result.condition = filters.condition
     if (filters.isActive !== undefined) result.isActive = filters.isActive
-    else result.isActive = true
     if (filters.hasDiscount !== undefined) result.hasDiscount = filters.hasDiscount
     if (filters.inStock !== undefined) result.inStock = filters.inStock
     if (filters.tags !== undefined) result.tags = filters.tags
     if (filters.rating !== undefined) result.rating = filters.rating
+    if (filters.location !== undefined) result.location = filters.location
+    if (filters.seller !== undefined) result.seller = filters.seller
 
-    return result
+    return Object.keys(result).length > 0 ? result : undefined
   }
 
   /**
-   * Transforms application-layer sorting to repository-layer specification
+   * Transforms application sorting to repository specification
    */
-  private transformToRepositorySorting(sorting?: ListProductsQuery['sorting']): { readonly field: "rating" | "price" | "createdAt" | "title" | "popularity" | "relevance"; readonly direction: "asc" | "desc"; } {
-    if (!sorting) {
-      return {
-        field: 'relevance',
-        direction: 'desc'
-      } as const
-    }
+  private transformToRepositorySorting(sorting?: ListProductsQuery['sorting']) {
+    if (!sorting) return undefined
 
     return {
-      field: sorting.field as "rating" | "price" | "createdAt" | "title" | "popularity" | "relevance",
+      field: sorting.field,
       direction: sorting.direction
-    } as const
+    }
   }
 
   /**
-   * Transforms application-layer pagination to repository-layer specification
+   * Transforms application pagination to repository specification
    */
   private transformToRepositoryPagination(pagination?: Required<ListProductsQuery>['pagination']) {
     if (!pagination) return undefined
@@ -260,45 +244,28 @@ export class ListProductsUseCase {
   }
 
   /**
-   * Transforms repository results into comprehensive enhanced response
+   * Transforms repository data to enhanced response with business intelligence
    */
   private async transformToEnhancedResponse(
     repositoryData: { items: readonly Product[]; pagination: any },
     query: Required<ListProductsQuery>,
     metrics: QueryPerformanceMetrics
   ): Promise<EnhancedProductListResponseDto> {
-    
     // Transform products to summary DTOs
-    const items = repositoryData.items.map(product => 
+    const productSummaries = repositoryData.items.map(product => 
       this.transformProductToSummary(product)
     )
 
-    // Generate aggregation state for business intelligence
+    // Build aggregation state for business intelligence
     const aggregationState = this.buildAggregationState(repositoryData.items)
 
-    // Build comprehensive pagination metadata
-    const pagination: AdvancedPaginationMetadata = {
-      total: repositoryData.pagination.total,
-      page: query.pagination.page ?? 1,
-      limit: query.pagination.limit ?? this.performanceThresholds.defaultPageSize,
-      offset: query.pagination.offset ?? 0,
-      totalPages: Math.ceil(repositoryData.pagination.total / (query.pagination.limit ?? this.performanceThresholds.defaultPageSize)),
-      hasNext: repositoryData.pagination.hasNext,
-      hasPrevious: repositoryData.pagination.hasPrevious,
-      performance: {
-        queryTimeMs: Math.round(metrics.repositoryLatency || 0),
-        totalScanned: repositoryData.items.length,
-        cacheHit: false // Repository layer would provide this
-      }
-    }
-
-    // Generate facets for dynamic filtering (if requested)
+    // Generate facets if requested
     const facets = query.includeFacets 
       ? this.generateFacets(aggregationState, query.filters)
-      : []
+      : undefined
 
-    // Build comprehensive search metadata
-    const metadata: SearchMetadata = {
+    // Generate comprehensive metadata
+    const searchMetadata: SearchMetadata = {
       totalResults: repositoryData.pagination.total,
       appliedFilters: (query.filters || {}) as Record<string, unknown>,
       averagePrice: this.calculateAveragePrice(aggregationState.priceStatistics),
@@ -309,15 +276,34 @@ export class ListProductsUseCase {
         percentiles: this.calculatePricePercentiles(repositoryData.items)
       },
       popularTags: this.getPopularTags(aggregationState.tagFrequency),
-      executionTime: 0, // Will be set by caller
-      cacheStrategy: 'miss' // Repository layer would provide this
+      executionTime: metrics.totalLatency,
+      cacheStrategy: metrics.cacheHitRatio ? 'hit' : 'miss'
     }
 
+    // Advanced pagination metadata
+    const paginationMetadata: AdvancedPaginationMetadata = {
+      total: repositoryData.pagination.total,
+      page: Math.floor(query.pagination.offset / query.pagination.limit) + 1,
+      limit: query.pagination.limit,
+      offset: query.pagination.offset,
+      totalPages: Math.ceil(repositoryData.pagination.total / query.pagination.limit),
+      hasNext: repositoryData.pagination.hasNext,
+      hasPrevious: repositoryData.pagination.hasPrevious,
+      performance: {
+        queryTimeMs: metrics.repositoryLatency || 0,
+        totalScanned: repositoryData.items.length,
+        cacheHit: metrics.cacheHitRatio !== undefined
+      }
+    }
+
+    // Available sorting options
+    const availableSortingOptions = this.getAvailableSortingOptions()
+
     return {
-      items,
-      pagination,
-      facets,
-      metadata,
+      items: productSummaries,
+      pagination: paginationMetadata,
+      ...(facets && { facets }),
+      metadata: searchMetadata,
       sorting: {
         applied: {
           primary: {
@@ -325,7 +311,7 @@ export class ListProductsUseCase {
             direction: query.sorting.direction
           }
         },
-        available: this.getAvailableSortingOptions()
+        available: availableSortingOptions
       },
       aggregations: {
         categoryDistribution: Object.fromEntries(aggregationState.categoryDistribution),
@@ -342,7 +328,7 @@ export class ListProductsUseCase {
   }
 
   /**
-   * Transforms Product entity to ProductSummaryDto for list representation
+   * Transforms product domain entity to summary DTO
    */
   private transformProductToSummary(product: Product): ProductSummaryDto {
     return {
@@ -353,7 +339,7 @@ export class ListProductsUseCase {
         id: product.getPrimaryImage().id,
         url: product.getPrimaryImage().url,
         altText: product.getPrimaryImage().altText,
-        isPrimary: true,
+        isPrimary: product.getPrimaryImage().isPrimary,
         order: product.getPrimaryImage().order
       },
       price: {
@@ -366,12 +352,6 @@ export class ListProductsUseCase {
             percentage: product.discount.percentage,
             amount: product.discount.amount,
             savingsAmount: product.getSavingsAmount(),
-            ...(product.discount.validUntil && {
-              validUntil: product.discount.validUntil.toISOString()
-            }),
-            ...(product.discount.condition && {
-              condition: product.discount.condition
-            }),
             isValid: product.discount.validUntil ? product.discount.validUntil > new Date() : true
           }
         }),
@@ -397,64 +377,79 @@ export class ListProductsUseCase {
   }
 
   /**
-   * Builds aggregation state for comprehensive business intelligence
+   * Builds aggregation state for business intelligence calculations
    */
   private buildAggregationState(products: readonly Product[]): AggregationState {
-    const state: AggregationState = {
-      categoryDistribution: new Map(),
-      sellerDistribution: new Map(),
-      priceStatistics: { min: Infinity, max: 0, sum: 0, count: 0 },
-      availabilityMetrics: { inStock: 0, outOfStock: 0, lowStock: 0, withDiscount: 0 },
-      tagFrequency: new Map()
+    const categoryDistribution = new Map<string, number>()
+    const sellerDistribution = new Map<string, number>()
+    const tagFrequency = new Map<string, number>()
+    
+    let priceSum = 0
+    let priceMin = Number.POSITIVE_INFINITY
+    let priceMax = Number.NEGATIVE_INFINITY
+    let priceCount = 0
+
+    const availabilityMetrics = {
+      inStock: 0,
+      outOfStock: 0,
+      lowStock: 0,
+      withDiscount: 0
     }
 
     for (const product of products) {
       // Category distribution
-      const category = `${product.category}|${product.subcategory}`
-      state.categoryDistribution.set(
-        category, 
-        (state.categoryDistribution.get(category) || 0) + 1
-      )
+      const currentCategoryCount = categoryDistribution.get(product.category) || 0
+      categoryDistribution.set(product.category, currentCategoryCount + 1)
 
       // Seller distribution
-      state.sellerDistribution.set(
-        product.seller.displayName,
-        (state.sellerDistribution.get(product.seller.displayName) || 0) + 1
-      )
+      const currentSellerCount = sellerDistribution.get(product.seller.id) || 0
+      sellerDistribution.set(product.seller.id, currentSellerCount + 1)
 
       // Price statistics
       const finalPrice = product.getFinalPrice()
-      state.priceStatistics.min = Math.min(state.priceStatistics.min, finalPrice)
-      state.priceStatistics.max = Math.max(state.priceStatistics.max, finalPrice)
-      state.priceStatistics.sum += finalPrice
-      state.priceStatistics.count++
+      priceSum += finalPrice
+      priceMin = Math.min(priceMin, finalPrice)
+      priceMax = Math.max(priceMax, finalPrice)
+      priceCount++
 
       // Availability metrics
       if (product.isAvailable()) {
         if (product.stock.available <= product.stock.threshold) {
-          state.availabilityMetrics.lowStock++
+          availabilityMetrics.lowStock++
         } else {
-          state.availabilityMetrics.inStock++
+          availabilityMetrics.inStock++
         }
       } else {
-        state.availabilityMetrics.outOfStock++
+        availabilityMetrics.outOfStock++
       }
 
       if (product.discount) {
-        state.availabilityMetrics.withDiscount++
+        availabilityMetrics.withDiscount++
       }
 
       // Tag frequency
       for (const tag of product.tags) {
-        state.tagFrequency.set(tag, (state.tagFrequency.get(tag) || 0) + 1)
+        const currentTagCount = tagFrequency.get(tag) || 0
+        tagFrequency.set(tag, currentTagCount + 1)
       }
     }
 
-    return state
+    return {
+      categoryDistribution,
+      sellerDistribution,
+      priceStatistics: {
+        min: priceMin === Number.POSITIVE_INFINITY ? 0 : priceMin,
+        max: priceMax === Number.NEGATIVE_INFINITY ? 0 : priceMax,
+        sum: priceSum,
+        count: priceCount
+      },
+      availabilityMetrics,
+      tagFrequency
+    }
   }
 
   /**
-   * Generates dynamic facets for enhanced filtering capabilities
+   * Generates facets for enhanced filtering capabilities
    */
   private generateFacets(state: AggregationState, appliedFilters?: any): ProductFacet[] {
     const facets: ProductFacet[] = []
@@ -463,170 +458,170 @@ export class ListProductsUseCase {
     if (state.categoryDistribution.size > 0) {
       facets.push({
         key: 'category',
-        label: 'Categoria',
-        type: 'hierarchical',
+        label: 'Categorias',
+        type: 'categorical',
         values: Array.from(state.categoryDistribution.entries())
-          .sort(([,a], [,b]) => b - a)
+          .sort(([, a], [, b]) => b - a)
           .slice(0, 10)
-          .map(([category, count]) => {
-            const [main, sub] = category.split('|')
-            return {
-              value: category,
-              label: sub ? `${main} > ${sub}` : main || 'Categoria',
-              count,
-              selected: appliedFilters?.category === main
-            }
-          }),
+          .map(([category, count]) => ({
+            value: category,
+            label: category,
+            count,
+            selected: appliedFilters?.category === category
+          })),
         displayPriority: 1
       })
     }
 
     // Price range facet
-    facets.push({
-      key: 'priceRange',
-      label: 'Faixa de Preço',
-      type: 'range',
-      values: this.generatePriceRangeFacets(state.priceStatistics),
-      displayPriority: 2
-    })
-
-    // Seller facet
-    if (state.sellerDistribution.size > 0) {
-      facets.push({
-        key: 'seller',
-        label: 'Vendedor',
-        type: 'categorical',
-        values: Array.from(state.sellerDistribution.entries())
-          .sort(([,a], [,b]) => b - a)
-          .slice(0, 5)
-          .map(([seller, count]) => ({
-            value: seller,
-            label: seller,
-            count,
-            selected: false
-          })),
-        displayPriority: 3
-      })
-    }
+    facets.push(...this.generatePriceRangeFacets(state.priceStatistics))
 
     return facets
   }
 
   /**
-   * Generates intelligent price range facets based on data distribution
+   * Generates price range facets
    */
-  private generatePriceRangeFacets(priceStats: AggregationState['priceStatistics']) {
+  private generatePriceRangeFacets(priceStats: AggregationState['priceStatistics']): ProductFacet[] {
+    if (priceStats.count === 0) return []
+
     const ranges = [
-      { min: 0, max: 100, label: 'Até R$ 100' },
-      { min: 100, max: 500, label: 'R$ 100 - R$ 500' },
-      { min: 500, max: 1000, label: 'R$ 500 - R$ 1.000' },
-      { min: 1000, max: 5000, label: 'R$ 1.000 - R$ 5.000' },
-      { min: 5000, max: Infinity, label: 'Acima de R$ 5.000' }
+      { min: 0, max: 50, label: 'Até R$ 50' },
+      { min: 50, max: 100, label: 'R$ 50 a R$ 100' },
+      { min: 100, max: 500, label: 'R$ 100 a R$ 500' },
+      { min: 500, max: 1000, label: 'R$ 500 a R$ 1.000' },
+      { min: 1000, max: Number.POSITIVE_INFINITY, label: 'Mais de R$ 1.000' }
     ]
 
-    return ranges.map(range => ({
-      value: `${range.min}-${range.max}`,
-      label: range.label,
-      count: 0, // Would be calculated from actual data distribution
-      selected: false
-    }))
+    return [{
+      key: 'priceRange',
+      label: 'Faixa de Preço',
+      type: 'range',
+      values: ranges.map(range => ({
+        value: `${range.min}-${range.max}`,
+        label: range.label,
+        count: 0, // Would require additional calculation
+        selected: false
+      })),
+      displayPriority: 2
+    }]
   }
 
   /**
-   * Utility methods for statistical calculations
+   * Calculates average price from statistics
    */
   private calculateAveragePrice(priceStats: AggregationState['priceStatistics']): number {
     return priceStats.count > 0 ? priceStats.sum / priceStats.count : 0
   }
 
+  /**
+   * Calculates median price from product list
+   */
   private calculateMedianPrice(products: readonly Product[]): number {
+    if (products.length === 0) return 0
+
     const prices = products.map(p => p.getFinalPrice()).sort((a, b) => a - b)
-    if (prices.length === 0) return 0
+    const middle = Math.floor(prices.length / 2)
     
-    const mid = Math.floor(prices.length / 2)
     return prices.length % 2 === 0 
-      ? ((prices[mid - 1] ?? 0) + (prices[mid] ?? 0)) / 2 
-      : prices[mid] ?? 0
+      ? (prices[middle - 1]! + prices[middle]!) / 2
+      : prices[middle]!
   }
 
+  /**
+   * Calculates price percentiles
+   */
   private calculatePricePercentiles(products: readonly Product[]): Record<number, number> {
+    if (products.length === 0) return {}
+
     const prices = products.map(p => p.getFinalPrice()).sort((a, b) => a - b)
     const percentiles = [25, 50, 75, 90, 95]
     
-    return percentiles.reduce((acc, p) => {
-      const index = Math.ceil((p / 100) * prices.length) - 1
-      acc[p] = prices[Math.max(0, index)] || 0
-      return acc
-    }, {} as Record<number, number>)
+    return Object.fromEntries(
+      percentiles.map(p => [
+        p,
+        prices[Math.floor((p / 100) * (prices.length - 1))] || 0
+      ])
+    )
   }
 
-  private getPopularTags(tagFrequency: Map<string, number>): { tag: string; count: number }[] {
+  /**
+   * Gets popular tags from frequency map
+   */
+  private getPopularTags(tagFrequency: Map<string, number>): readonly { tag: string; count: number }[] {
     return Array.from(tagFrequency.entries())
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 10)
       .map(([tag, count]) => ({ tag, count }))
   }
 
+  /**
+   * Gets available sorting options
+   */
   private getAvailableSortingOptions() {
     return [
-      { key: 'relevance', label: 'Mais relevantes', field: 'relevance', direction: 'desc' as const },
-      { key: 'price_asc', label: 'Menor preço', field: 'price', direction: 'asc' as const },
-      { key: 'price_desc', label: 'Maior preço', field: 'price', direction: 'desc' as const },
-      { key: 'rating', label: 'Melhor avaliados', field: 'rating', direction: 'desc' as const },
-      { key: 'newest', label: 'Mais recentes', field: 'createdAt', direction: 'desc' as const },
-      { key: 'popularity', label: 'Mais populares', field: 'popularity', direction: 'desc' as const }
+      { key: 'relevance', label: 'Mais relevantes', field: 'relevance', direction: 'desc' as const, description: 'Ordenação por relevância' },
+      { key: 'price_asc', label: 'Menor preço', field: 'price', direction: 'asc' as const, description: 'Produtos mais baratos primeiro' },
+      { key: 'price_desc', label: 'Maior preço', field: 'price', direction: 'desc' as const, description: 'Produtos mais caros primeiro' },
+      { key: 'rating', label: 'Melhor avaliação', field: 'rating', direction: 'desc' as const, description: 'Melhores avaliações primeiro' },
+      { key: 'newest', label: 'Mais recentes', field: 'createdAt', direction: 'desc' as const, description: 'Produtos mais novos primeiro' },
+      { key: 'popularity', label: 'Mais populares', field: 'popularity', direction: 'desc' as const, description: 'Produtos mais vendidos' }
     ]
   }
 
   /**
-   * Performance monitoring and alerting infrastructure
+   * Monitors query performance and logs warnings for slow queries
    */
   private monitorPerformance(metrics: QueryPerformanceMetrics): void {
-    if (metrics.totalLatency > this.performanceThresholds.queryErrorMs) {
-      console.error('Query performance critical threshold exceeded', {
-        latency: metrics.totalLatency,
-        threshold: this.performanceThresholds.queryErrorMs,
+    const SLOW_QUERY_THRESHOLD = 1000 // ms
+    const VERY_SLOW_QUERY_THRESHOLD = 3000 // ms
+
+    if (metrics.totalLatency > VERY_SLOW_QUERY_THRESHOLD) {
+      console.warn('Very slow product query detected:', {
+        totalLatency: metrics.totalLatency,
+        repositoryLatency: metrics.repositoryLatency,
+        transformationLatency: metrics.transformationLatency,
         itemsProcessed: metrics.itemsProcessed
       })
-    } else if (metrics.totalLatency > this.performanceThresholds.queryWarningMs) {
-      console.warn('Query performance warning threshold exceeded', {
-        latency: metrics.totalLatency,
-        threshold: this.performanceThresholds.queryWarningMs,
+    } else if (metrics.totalLatency > SLOW_QUERY_THRESHOLD) {
+      console.info('Slow product query detected:', {
+        totalLatency: metrics.totalLatency,
         itemsProcessed: metrics.itemsProcessed
       })
     }
   }
 
   /**
-   * Error handling methods with comprehensive context preservation
+   * Handles repository-specific errors
    */
-  private handleRepositoryError(repositoryError: any): UseCaseResult<never> {
+  private handleRepositoryError(repositoryResult: any): UseCaseResult<never> {
     return {
       success: false,
       error: new UseCaseError(
-        `Repository operation failed: ${repositoryError.message}`,
+        'Failed to retrieve product data',
         UseCaseErrorCode.DATA_ACCESS_ERROR,
         { 
-          originalError: repositoryError,
-          operation: 'findMany',
-          layer: 'repository'
+          repositoryError: repositoryResult.error?.message || 'Unknown repository error',
+          repositoryErrorCode: repositoryResult.error?.code
         }
       )
     }
   }
 
+  /**
+   * Handles unexpected errors during query processing
+   */
   private handleUnexpectedError(error: unknown): UseCaseResult<never> {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
     
     return {
       success: false,
       error: new UseCaseError(
-        `Unexpected error in ListProductsUseCase: ${errorMessage}`,
+        'An unexpected error occurred while processing product query',
         UseCaseErrorCode.INTERNAL_ERROR,
         { 
-          originalError: error,
-          operation: 'execute',
-          layer: 'usecase'
+          originalError: errorMessage,
+          stack: error instanceof Error ? error.stack : undefined
         }
       )
     }
