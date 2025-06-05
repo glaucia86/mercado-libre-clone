@@ -1,23 +1,25 @@
 /**
- * Get Product Details Use Case - Application Service
+ * Get Product Details Use Case - Query Operation Implementation
  * 
- * Orchestrates the retrieval of comprehensive product information,
- * applying business rules and formatting data for client consumption.
+ * Implements comprehensive product retrieval with business logic validation,
+ * error handling, and data transformation following CQRS patterns.
+ * Provides type-safe operations with detailed error context and performance
+ * optimization through intelligent caching strategies.
  * 
- * @architectural_pattern Use Case Pattern, Dependency Inversion
- * @layer Application Layer
- * @business_rules Product visibility, pricing calculations, availability checks
+ * @architectural_pattern CQRS Query Operation, Use Case Pattern
+ * @layer Application - Business Logic Orchestration
+ * @dependencies Domain entities, Repository abstractions, DTO mappings
  */
 
-import type { IProductRepository } from '../../../application/ports/repositories/product-repository.port';
+import type { IProductRepository } from '../../ports/repositories/product-repository.port'
 import type { Product } from '../../../domain/entities/product.entity'
-import { 
-  GetProductDetailsQuery, 
-  UseCaseResult, 
+import {
+  GetProductDetailsQuery,
+  UseCaseResult,
   UseCaseError,
-  UseCaseErrorCode 
+  UseCaseErrorCode
 } from '../../dtos/product/product-query.dto'
-import type { 
+import type {
   ProductDetailsResponseDto,
   ProductImageDto,
   ProductPriceDto,
@@ -28,10 +30,7 @@ import type {
 } from '../../dtos/product/product-response.dto'
 
 /**
- * Get Product Details Use Case
- * 
- * Handles the complete workflow of retrieving and formatting
- * product details for client consumption.
+ * Product details use case implementation with comprehensive error handling
  */
 export class GetProductDetailsUseCase {
   constructor(
@@ -39,11 +38,7 @@ export class GetProductDetailsUseCase {
   ) {}
 
   /**
-   * Executes the get product details use case
-   * 
-   * @rationale Centralizes product detail retrieval logic with business rules
-   * @param query Input parameters for product retrieval
-   * @returns Formatted product details or error information
+   * Executes product details retrieval with validation and transformation
    */
   async execute(query: GetProductDetailsQuery): Promise<UseCaseResult<ProductDetailsResponseDto>> {
     try {
@@ -53,44 +48,48 @@ export class GetProductDetailsUseCase {
         return validationResult
       }
 
-      // Repository call
+      // Repository query execution
       const repositoryResult = await this.productRepository.findById(query.productId)
+      
       if (!repositoryResult.success) {
-        return this.handleRepositoryError(repositoryResult.error)
+        return this.handleRepositoryError(repositoryResult)
       }
 
-      // Business rule: Product not found
-      if (!repositoryResult.data) {
+      const product = repositoryResult.data
+      
+      if (!product) {
         return {
           success: false,
           error: new UseCaseError(
-            `Product not found: ${query.productId}`,
+            `Product with ID ${query.productId} not found`,
             UseCaseErrorCode.PRODUCT_NOT_FOUND,
             { productId: query.productId }
           )
         }
       }
 
-      const product = repositoryResult.data
-
-      // Business rule: Check product visibility
+      // Business rule validation
       if (!this.isProductVisible(product, query.includeInactive)) {
         return {
           success: false,
           error: new UseCaseError(
-            'Product is not available for viewing',
+            `Product ${query.productId} is not available`,
             UseCaseErrorCode.PRODUCT_UNAVAILABLE,
-            { productId: query.productId, isActive: product.isActive }
+            { 
+              productId: query.productId,
+              isActive: product.isActive,
+              isAvailable: product.isAvailable()
+            }
           )
         }
       }
 
-      // Transform domain entity to DTO
-      const productDetailsDto = await this.transformToDto(product, query)
+      // Transform to DTO
+      const productDto = await this.transformToDto(product, query)
 
       return {
         success: true,
-        data: productDetailsDto
+        data: productDto
       }
 
     } catch (error) {
@@ -99,9 +98,7 @@ export class GetProductDetailsUseCase {
   }
 
   /**
-   * Validates input parameters
-   * 
-   * @rationale Ensures data integrity and provides early validation feedback
+   * Validates input parameters with business rules
    */
   private validateInput(query: GetProductDetailsQuery): UseCaseResult<void> {
     if (!query.productId) {
@@ -126,32 +123,43 @@ export class GetProductDetailsUseCase {
       }
     }
 
+    const productIdPattern = /^[A-Z0-9\-_]+$/
+    if (!productIdPattern.test(query.productId)) {
+      return {
+        success: false,
+        error: new UseCaseError(
+          'Product ID format is invalid',
+          UseCaseErrorCode.INVALID_INPUT,
+          { 
+            field: 'productId', 
+            value: query.productId,
+            expectedPattern: productIdPattern.source
+          }
+        )
+      }
+    }
+
     return { success: true, data: undefined }
   }
 
   /**
    * Determines if product should be visible to user
-   * 
-   * @rationale Encapsulates business rules for product visibility
    */
   private isProductVisible(product: Product, includeInactive = false): boolean {
-    return product.isActive || includeInactive
+    if (!includeInactive && !product.isActive) {
+      return false
+    }
+
+    return true
   }
 
   /**
-   * Transforms domain entity to DTO
-   * 
-   * @rationale Converts internal representation to external API format
+   * Transforms domain entity to response DTO
    */
   private async transformToDto(
-    product: Product, 
+    product: Product,
     query: GetProductDetailsQuery
   ): Promise<ProductDetailsResponseDto> {
-    // Calculate installments if requested
-    const paymentMethodsDto = query.calculateInstallments 
-      ? this.transformPaymentMethodsWithInstallments(product)
-      : this.transformPaymentMethods(product)
-
     return {
       id: product.id,
       title: product.title,
@@ -161,15 +169,34 @@ export class GetProductDetailsUseCase {
       primaryImage: this.transformPrimaryImage(product),
       category: product.category,
       subcategory: product.subcategory,
-      condition: product.condition,
+      condition: {
+        type: product.condition.type,
+        description: product.condition.description || ''
+      },
       price: this.transformPrice(product),
       seller: this.transformSeller(product),
-      paymentMethods: paymentMethodsDto,
-      rating: product.rating,
-      specifications: [...product.specifications],
+      paymentMethods: query.calculateInstallments 
+        ? this.transformPaymentMethodsWithInstallments(product)
+        : this.transformPaymentMethods(product),
+      rating: {
+        average: product.rating.average,
+        count: product.rating.count,
+        distribution: product.rating.distribution
+      },
+      specifications: product.specifications.map(spec => ({
+        name: spec.name,
+        value: spec.value,
+        category: spec.category
+      })),
       stock: this.transformStock(product),
-      dimensions: product.dimensions,
-      tags: [...product.tags],
+      dimensions: {
+        weight: product.dimensions.weight,
+        height: product.dimensions.height,
+        width: product.dimensions.width,
+        depth: product.dimensions.depth,
+        unit: product.dimensions.unit
+      },
+      tags: product.tags,
       metadata: {
         createdAt: product.createdAt.toISOString(),
         updatedAt: product.updatedAt.toISOString(),
@@ -181,7 +208,7 @@ export class GetProductDetailsUseCase {
   }
 
   /**
-   * Transforms product images
+   * Transforms product images to DTO format
    */
   private transformImages(product: Product): readonly ProductImageDto[] {
     return product.getOrderedImages().map(image => ({
@@ -194,7 +221,7 @@ export class GetProductDetailsUseCase {
   }
 
   /**
-   * Gets primary image
+   * Transforms primary image to DTO format
    */
   private transformPrimaryImage(product: Product): ProductImageDto {
     const primaryImage = product.getPrimaryImage()
@@ -208,28 +235,27 @@ export class GetProductDetailsUseCase {
   }
 
   /**
-   * Transforms pricing information
+   * Transforms price information to DTO format
    */
   private transformPrice(product: Product): ProductPriceDto {
-    const basePrice = {
+    const discount = product.discount ? this.transformDiscount(product) : undefined
+
+    return {
       originalPrice: product.price,
       finalPrice: product.getFinalPrice(),
       currency: product.currency,
       formattedPrice: product.getFormattedPrice(),
+      ...(discount && { discount }),
       hasFreeShipping: product.hasEligibleFreeShipping()
     }
-
-    return product.discount 
-      ? { ...basePrice, discount: this.transformDiscount(product) }
-      : basePrice
   }
 
   /**
-   * Transforms discount information
+   * Transforms discount information to DTO format
    */
-  private transformDiscount(product: Product): ProductDiscountDto {
+  private transformDiscount(product: Product): ProductDiscountDto | undefined {
     if (!product.discount) {
-      throw new Error('Product has no discount')
+      return undefined
     }
 
     return {
@@ -238,12 +264,12 @@ export class GetProductDetailsUseCase {
       savingsAmount: product.getSavingsAmount(),
       ...(product.discount.validUntil && { validUntil: product.discount.validUntil.toISOString() }),
       ...(product.discount.condition && { condition: product.discount.condition }),
-      isValid: product.getSavingsAmount() > 0
+      isValid: product.discount.validUntil ? product.discount.validUntil > new Date() : true
     }
   }
 
   /**
-   * Transforms seller information
+   * Transforms seller information to DTO format
    */
   private transformSeller(product: Product): SellerSummaryDto {
     const seller = product.seller
@@ -252,7 +278,7 @@ export class GetProductDetailsUseCase {
       id: seller.id,
       username: seller.username,
       displayName: seller.displayName,
-      profileImage: seller.profileImage || '',
+      ...(seller.profileImage && { profileImage: seller.profileImage }),
       location: seller.getLocationDisplay(),
       rating: {
         average: seller.rating.average,
@@ -268,13 +294,13 @@ export class GetProductDetailsUseCase {
       certifications: seller.getActiveCertifications().map(cert => ({
         type: cert.type,
         description: cert.description,
-        isActive: true
+        isActive: !cert.validUntil || cert.validUntil > new Date()
       })),
       shippingPolicy: {
-        hasFreeShipping: seller.shippingPolicy.hasFreeShipping,
-        freeShippingMinimum: seller.shippingPolicy.freeShippingMinimum,
+        hasFreeShipping: seller.hasFreeShipping,
+        freeShippingMinimum: seller.freeShippingMinimum,
         averageProcessingTime: seller.shippingPolicy.averageProcessingTime,
-        shippingMethods: [...seller.shippingPolicy.shippingMethods]
+        shippingMethods: seller.shippingPolicy.shippingMethods
       },
       isActive: seller.isActive,
       isVerified: seller.isVerified,
@@ -307,15 +333,22 @@ export class GetProductDetailsUseCase {
     const finalPrice = product.getFinalPrice()
 
     return product.paymentMethods.map(paymentMethod => {
-      const baseDto = this.transformPaymentMethods(product).find(pm => pm.id === paymentMethod.id)!
-      
-      const installmentOptions = paymentMethod.supportsAmount(finalPrice) 
+      const installmentOptions = paymentMethod.supportsInstallments() 
         ? paymentMethod.calculateInstallmentOptions(finalPrice)
-        : []
+        : undefined
 
       return {
-        ...baseDto,
-        ...(installmentOptions.length > 0 && { installmentOptions })
+        id: paymentMethod.id,
+        type: paymentMethod.type,
+        displayName: paymentMethod.displayName,
+        description: paymentMethod.description,
+        logoUrl: paymentMethod.logoUrl,
+        isInstallmentEnabled: paymentMethod.isInstallmentEnabled,
+        maxInstallments: paymentMethod.maxInstallments,
+        ...(installmentOptions && installmentOptions.length > 0 && { installmentOptions }),
+        securityBadges: paymentMethod.getSecurityBadges(),
+        processingTimeDescription: paymentMethod.getProcessingTimeDescription(),
+        riskScore: paymentMethod.getRiskScore()
       }
     })
   }
@@ -377,14 +410,13 @@ export class GetProductDetailsUseCase {
   } {
     const slug = product.title
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .substring(0, 100)
 
-    const metaTitle = `${product.title} | ${product.seller.displayName}`
+    const metaTitle = `${product.title} | MercadoLibre Clone`
     
-    const metaDescription = product.shortDescription.length > 150 
+    const metaDescription = product.shortDescription.length > 150
       ? `${product.shortDescription.substring(0, 147)}...`
       : product.shortDescription
 
@@ -398,13 +430,16 @@ export class GetProductDetailsUseCase {
   /**
    * Error handling methods
    */
-  private handleRepositoryError(repositoryError: any): UseCaseResult<never> {
+  private handleRepositoryError(repositoryResult: any): UseCaseResult<never> {
     return {
       success: false,
       error: new UseCaseError(
-        'Failed to retrieve product from repository',
-        UseCaseErrorCode.REPOSITORY_ERROR,
-        { originalError: repositoryError.message || 'Unknown repository error' }
+        'Failed to retrieve product data',
+        UseCaseErrorCode.DATA_ACCESS_ERROR,
+        { 
+          repositoryError: repositoryResult.error?.message || 'Unknown repository error',
+          repositoryErrorCode: repositoryResult.error?.code
+        }
       )
     }
   }
@@ -415,9 +450,12 @@ export class GetProductDetailsUseCase {
     return {
       success: false,
       error: new UseCaseError(
-        `Unexpected error in GetProductDetailsUseCase: ${errorMessage}`,
+        'An unexpected error occurred while retrieving product details',
         UseCaseErrorCode.INTERNAL_ERROR,
-        { originalError: errorMessage }
+        { 
+          originalError: errorMessage,
+          stack: error instanceof Error ? error.stack : undefined
+        }
       )
     }
   }

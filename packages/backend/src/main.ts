@@ -395,7 +395,7 @@ async function main(): Promise<void> {
 }
 
 // Bootstrap application execution
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch((error) => {
     console.error('❌ Fatal application error:', error)
     process.exit(1)
