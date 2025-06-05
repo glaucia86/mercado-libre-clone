@@ -10,7 +10,7 @@
  * @responsibility Product enumeration, filtering, aggregation, and transformation
  */
 
-import type { IProductRepository } from '../../../domain/repositories/product-repository.port'
+import type { IProductRepository } from '../../../application/ports/repositories/product-repository.port'
 import type { Product } from '../../../domain/entities/product.entity'
 import {
   ListProductsQuery,
@@ -24,7 +24,7 @@ import {
   EnhancedProductListResponseDto, 
   ProductFacet, 
   SearchMetadata 
-} from '@/application/dtos/product/product-list.dto'
+} from '../../../application/dtos/product/product-list.dto'
 
 /**
  * Performance monitoring and caching infrastructure
@@ -233,14 +233,16 @@ export class ListProductsUseCase {
   /**
    * Transforms application-layer sorting to repository-layer specification
    */
-  private transformToRepositorySorting(sorting?: ListProductsQuery['sorting']): { readonly field: "rating" | "price" | "createdAt" | "title" | "popularity"; readonly direction: "asc" | "desc"; } | undefined {
-    if (!sorting) return undefined
-
-    // Map relevance to a valid repository field
-    const repositoryField = sorting.field === 'relevance' ? 'createdAt' : sorting.field
+  private transformToRepositorySorting(sorting?: ListProductsQuery['sorting']): { readonly field: "rating" | "price" | "createdAt" | "title" | "popularity" | "relevance"; readonly direction: "asc" | "desc"; } {
+    if (!sorting) {
+      return {
+        field: 'relevance',
+        direction: 'desc'
+      } as const
+    }
 
     return {
-      field: repositoryField as "rating" | "price" | "createdAt" | "title" | "popularity",
+      field: sorting.field as "rating" | "price" | "createdAt" | "title" | "popularity" | "relevance",
       direction: sorting.direction
     } as const
   }
@@ -261,7 +263,7 @@ export class ListProductsUseCase {
    * Transforms repository results into comprehensive enhanced response
    */
   private async transformToEnhancedResponse(
-    repositoryData: { items: Product[]; pagination: any },
+    repositoryData: { items: readonly Product[]; pagination: any },
     query: Required<ListProductsQuery>,
     metrics: QueryPerformanceMetrics
   ): Promise<EnhancedProductListResponseDto> {
@@ -397,7 +399,7 @@ export class ListProductsUseCase {
   /**
    * Builds aggregation state for comprehensive business intelligence
    */
-  private buildAggregationState(products: Product[]): AggregationState {
+  private buildAggregationState(products: readonly Product[]): AggregationState {
     const state: AggregationState = {
       categoryDistribution: new Map(),
       sellerDistribution: new Map(),
@@ -537,7 +539,7 @@ export class ListProductsUseCase {
     return priceStats.count > 0 ? priceStats.sum / priceStats.count : 0
   }
 
-  private calculateMedianPrice(products: Product[]): number {
+  private calculateMedianPrice(products: readonly Product[]): number {
     const prices = products.map(p => p.getFinalPrice()).sort((a, b) => a - b)
     if (prices.length === 0) return 0
     
@@ -547,7 +549,7 @@ export class ListProductsUseCase {
       : prices[mid] ?? 0
   }
 
-  private calculatePricePercentiles(products: Product[]): Record<number, number> {
+  private calculatePricePercentiles(products: readonly Product[]): Record<number, number> {
     const prices = products.map(p => p.getFinalPrice()).sort((a, b) => a - b)
     const percentiles = [25, 50, 75, 90, 95]
     
