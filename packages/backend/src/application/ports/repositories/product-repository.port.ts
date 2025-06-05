@@ -17,39 +17,39 @@ import type { Product } from '../../../domain/entities/product.entity'
  */
 export interface ProductQuerySpecification {
   readonly filters?: {
-    readonly category?: string
-    readonly subcategory?: string
-    readonly sellerId?: string
-    readonly minPrice?: number
-    readonly maxPrice?: number
-    readonly condition?: string
-    readonly isActive?: boolean
-    readonly hasDiscount?: boolean
-    readonly inStock?: boolean
-    readonly tags?: readonly string[]
-    readonly rating?: {
-      readonly min: number
-      readonly max?: number
-    }
-    readonly location?: {
-      readonly country?: string
-      readonly state?: string
-      readonly city?: string
-    }
-    readonly seller?: {
-      readonly verified?: boolean
-      readonly premium?: boolean
-      readonly minRating?: number
-    }
+  readonly category?: string
+  readonly subcategory?: string
+  readonly sellerId?: string
+  readonly minPrice?: number
+  readonly maxPrice?: number
+  readonly condition?: string
+  readonly isActive?: boolean
+  readonly hasDiscount?: boolean
+  readonly inStock?: boolean
+  readonly tags?: readonly string[]
+  readonly rating?: {
+    readonly min: number
+    readonly max?: number
   }
+  readonly location?: {
+    readonly country?: string
+    readonly state?: string
+    readonly city?: string
+  }
+  readonly seller?: {
+    readonly verified?: boolean
+    readonly premium?: boolean
+    readonly minRating?: number
+  }
+} | undefined
   readonly sorting?: {
-    readonly field: 'price' | 'rating' | 'createdAt' | 'title' | 'popularity' | 'relevance'
-    readonly direction: 'asc' | 'desc'
-  }
+  readonly field: 'price' | 'rating' | 'createdAt' | 'title' | 'popularity' | 'relevance'
+  readonly direction: 'asc' | 'desc'
+} | undefined
   readonly pagination?: {
-    readonly offset: number
-    readonly limit: number
-  }
+  readonly offset: number
+  readonly limit: number
+} | undefined
 }
 
 /**
