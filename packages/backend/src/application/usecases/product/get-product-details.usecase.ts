@@ -9,7 +9,7 @@
  * @business_rules Product visibility, pricing calculations, availability checks
  */
 
-import type { IProductRepository } from '../../../domain/repositories/product-repository.port';
+import type { IProductRepository } from '../../../application/ports/repositories/product-repository.port';
 import type { Product } from '../../../domain/entities/product.entity'
 import { 
   GetProductDetailsQuery, 
