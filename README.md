@@ -57,3 +57,37 @@ packages/backend/
 ├── vitest.config.ts
 └── eslint.config.js
 ```
+
+## 🏗️ Architectural Rationale & Layer Responsibility Analysis
+
+### Presentation Layer Positioning Justification:
+
+The Express application foundation represents the **Infrastructure Concern Orchestration Layer** within the Presentation tier of our Clean Architecture implementation. This strategic positioning adheres to the **Separation of Concerns Principle** and maintains **Dependency Inversion** by serving as the **Composition Root** for the entire application dependency graph.
+
+### Layer Responsibility Matrix:
+
+
+Architectural Layer    | Responsibility Scope                | File Location Strategy
+-----------------------|-------------------------------------|-------------------------
+Domain                 | Business Logic & Entities           | src/domain/
+Application           | Use Cases & Business Orchestration  | src/application/
+Infrastructure        | Data Access & External Services     | src/infrastructure/
+Presentation          | HTTP Interface & Server Management  | src/presentation/
+
+## 🏛️ Architectural Integration Points & Dependency Flow Analysis
+
+### Inbound Dependencies (Infrastructure → Application → Presentation):
+
+```ts
+// Dependency Flow Visualization
+Domain Layer
+    ↓ (Entities, Value Objects, Business Rules)
+Application Layer  
+    ↓ (Use Cases, DTOs, Repository Ports)
+Infrastructure Layer
+    ↓ (Repository Implementations, External Services)
+Presentation Layer (app.ts)
+    ↓ (HTTP Interface, Request/Response Handling)
+External Clients (Frontend, API Consumers)
+``` 
+
